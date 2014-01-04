@@ -18,10 +18,10 @@
     "suggest": {
         "doctrine/mongodb-odm-bundle": ">=2.1.0"
     },
-    "target-dir": "Julius/HolterBundle",
+    "target-dir": "Jiabin/HolterBundle",
     "autoload": {
         "psr-0": {
-            "Julius\\HolterBundle": ""
+            "Jiabin\\HolterBundle": ""
         }
     },
     "extra": {
