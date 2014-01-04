@@ -13,7 +13,8 @@
     ],
     "require": {
         "symfony/symfony": ">=2.1,<2.6-dev",
-        "doctrine/common": ">=2.1.3"
+        "doctrine/common": ">=2.1.3",
+        "components/html5-boilerplate": "*"
     },
     "suggest": {
         "doctrine/mongodb-odm-bundle": ">=2.1.0"
