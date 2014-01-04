@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="holter.event_subscriber.class">Jiabin\HolterBundle\Event\EventSubscriber</parameter>
+        <parameter key="holter.check_factory.class">Jiabin\HolterBundle\Factory\CheckFactory</parameter>
+    </parameters>
+
+    <services>
+        <!-- Event Subscriber -->
+        <service id="holter.event_subscriber" class="%holter.event_subscriber.class%">
+            <argument /> <!-- Replaced in bundle extension -->
+            <tag name="kernel.event_subscriber" />
+        </service>
+        <!-- Check Factory -->
+        <service id="holter.check_factory" class="%holter.check_factory.class%">
+            <argument /> <!-- Replaced in bundle extension -->
+            <argument>%holter.check_result.doctrine.class%</argument>
+        </service>
+    </services>
+
+</container>

@@ -1,0 +1,4 @@
+# Api
+holter_api_check:
+    defaults:  { _controller:  JiabinHolterBundle:Api:check }
+    pattern: /api/check

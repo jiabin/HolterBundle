@@ -1,0 +1,14 @@
+{
+    "name": "jiabin/holter-bundle",
+    "description": "Service status page",
+    "require": {
+        "symfony/symfony": ">=2.2.0,<2.6-dev"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Eymen Gunay",
+            "email": "eymen@egunay.com"
+        }
+    ]
+}

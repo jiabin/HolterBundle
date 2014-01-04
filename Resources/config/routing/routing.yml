@@ -1,0 +1,4 @@
+# Api
+holter_api:
+    resource: "@JiabinHolterBundle/Resources/config/routing/api.yml"
+    prefix:   /
