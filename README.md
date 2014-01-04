@@ -1,6 +1,6 @@
 # HolterBundle
 
-Service status page bundle for Symfony2.
+Service status bundle for Symfony2.
 
 Currently it only supports MongoDB (although adding ORM should be fairly simple)**
 
