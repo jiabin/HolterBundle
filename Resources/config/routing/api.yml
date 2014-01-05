@@ -1,4 +1,16 @@
 # Api
-holter_api_check:
-    defaults:  { _controller:  JiabinHolterBundle:Api:check }
-    pattern: /api/check
+holter_api_status:
+    defaults:  { _controller:  JiabinHolterBundle:Api:status, format: json }
+    pattern: /api/status.{format}
+
+holter_api_checks:
+    defaults:  { _controller:  JiabinHolterBundle:Api:checks, format: json }
+    pattern: /api/checks.{format}
+
+holter_api_badge:
+    defaults:  { _controller:  JiabinHolterBundle:Api:badge, format: png }
+    pattern: /api/badge.{format}
+
+holter_api_doc:
+    defaults:  { _controller:  JiabinHolterBundle:Api:documentation }
+    pattern: /api/doc
