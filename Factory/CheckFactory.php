@@ -3,6 +3,7 @@
 namespace Jiabin\HolterBundle\Factory;
 
 use Jiabin\HolterBundle\Model\Result;
+use Jiabin\HolterBundle\Model\Status;
 use Jiabin\HolterBundle\Check\CheckInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -60,6 +61,35 @@ class CheckFactory
     }
 
     /**
+     * Create status
+     * 
+     * @return Status
+     */
+    public function createStatus()
+    {
+        $status = new Status();
+
+        // Get results for each check
+        foreach ($this->getChecks() as $name => $check) {
+            $result = $this->getResult($name);
+            $status->addResult($result);
+        }
+
+        // Last minor & major
+        $resultRepository = $this->om->getRepository($this->resultClass);
+        $minor = $resultRepository->findBy(array('status' => Result::MINOR), array('createdAt' => 'DESC'));
+        if ($minor->hasNext()) {
+            $status->setLastMinor($minor->getNext()->getCreatedAt());
+        }
+        $major = $resultRepository->findBy(array('status' => Result::MAJOR), array('createdAt' => 'DESC'));
+        if ($major->hasNext()) {
+            $status->setLastMajor($major->getNext()->getCreatedAt());
+        }
+
+        return $status;
+    }
+
+    /**
      * Create result
      *
      * @param  string  $checkName
@@ -69,8 +99,8 @@ class CheckFactory
      */
     public function createResult($checkName, $message, $status)
     {
-        $repository = $this->om->getRepository($this->resultClass);
-        $className  = $repository->getClassName();
+        $resultRepository = $this->om->getRepository($this->resultClass);
+        $className = $resultRepository->getClassName();
         
         return new $className($checkName, $message, $status);
     }
@@ -82,8 +112,8 @@ class CheckFactory
      */
     public function getResult($checkName)
     {
-        $repository = $this->om->getRepository($this->resultClass);
-        $results = $repository->findBy(array('checkName' => $checkName), array('createdAt' => 'DESC'), 1);
+        $resultRepository = $this->om->getRepository($this->resultClass);
+        $results = $resultRepository->findBy(array('checkName' => $checkName), array('createdAt' => 'DESC'), 1);
         if ($results->hasNext()) {
             return $results->getNext();
         }
