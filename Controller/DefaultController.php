@@ -2,18 +2,24 @@
 
 namespace Jiabin\HolterBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 class DefaultController extends Controller
 {
     /**
-     * @Route("/")
-     * @Template()
+     * Index action
      */
     public function indexAction()
     {
-        return array('title' => 'Holter');
+        $cf = $this->get('holter.check_factory');
+
+        $response = new Response();
+        $response->setPublic();
+        $response->setSharedMaxAge(600);
+
+        return $this->render('JiabinHolterBundle:Default:index.html.twig', array(
+            'status' => $cf->createStatus()
+        ), $response);
     }
 }

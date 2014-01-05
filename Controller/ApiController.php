@@ -2,43 +2,70 @@
 
 namespace Jiabin\HolterBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class ApiController extends Controller
 {
     /**
-     * Runs all checks
+     * Badge action
      */
-    public function checkAction()
+    public function badgeAction()
     {
-        $cf   = $this->get('holter.check_factory');
-        $data = array();
+        $cf = $this->get('holter.check_factory');
+        $status = $cf->createStatus();
 
-        $globalStatus  = 0;
-        $lastCheckedAt = null;
+        $badgeExtension = '.png';
+        $badgePath = __DIR__.'/../Resources/public/img/badge';
+        $badgeContents = file_get_contents($badgePath.'/'.$status->getStatusName().$badgeExtension);
+        $response = new Response($badgeContents, 200, array(
+            'Content-type' => 'image/png'
+        ));
+        $response->setPublic();
+        $response->setSharedMaxAge(30);
 
-        foreach ($cf->getChecks() as $name => $check) {
-            $result = $cf->getResult($name);
-            $data[$name] = $result->toArray();
-            $data[$name]['label'] = $check->getLabel(); 
+        return $response;
+    }
 
-            // Global status
-            if ($result->getStatus() > $globalStatus) {
-                $globalStatus = $result->getStatus();
-            }
-            // Global last checked
-            if (is_null($lastCheckedAt) or $result->getCreatedAt() > $lastCheckedAt) {
-                $lastCheckedAt = $result->getCreatedAt();
-            }
-        }
+    /**
+     * Returns all avaiable checks
+     */
+    public function checksAction()
+    {
+        $cf = $this->get('holter.check_factory');
 
-        // Global
-        $data['global'] = array(
-            'status'     => $globalStatus,
-            'created_at' => $lastCheckedAt ?: new \DateTime(),
-        );
+        $response = JsonResponse::create(array_keys($cf->getChecks()), 200);
+        $response->setPublic();
+        $response->setSharedMaxAge(600);
 
-        return JsonResponse::create($data, 200);
+        return $response;
+    }
+
+    /**
+     * Get status
+     */
+    public function statusAction()
+    {
+        $cf = $this->get('holter.check_factory');
+        $status = $cf->createStatus();
+
+        $response = JsonResponse::create($status->toArray(), 200);
+        $response->setPublic();
+        $response->setSharedMaxAge(30);
+
+        return $response;
+    }
+
+    /**
+     * Api documentation
+     */
+    public function documentationAction()
+    {
+        $response = new Response();
+        $response->setPublic();
+        $response->setSharedMaxAge(600);
+
+        return $this->render('JiabinHolterBundle:Api:documentation.html.twig', array(), $response);
     }
 }
