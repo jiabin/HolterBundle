@@ -14,11 +14,6 @@ abstract class Check implements CheckInterface
     protected $name;
 
     /**
-     * @var string
-     */
-    protected $label;
-
-    /**
      * @var array
      */
     protected $options;
@@ -80,41 +75,5 @@ abstract class Check implements CheckInterface
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setLabel($label)
-    {
-        $this->label = $label;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLabel()
-    {
-        return $this->label;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setIcon($icon)
-    {
-        $this->icon = $icon;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getIcon()
-    {
-        return $this->icon;
     }
 }

@@ -31,7 +31,7 @@ class HttpCheck extends Check
             } elseif ($this->options['content'] && !strpos($str, $this->options['content'])) {
                 $result = $this->buildResult("Content ".$this->options['content']." not found in response from ".$this->options['host'].":".$this->options['port'].$this->options['path'], Result::MAJOR);
             } else {
-                $result = $this->buildResult('Host is up & running', Result::GOOD);
+                $result = $this->buildResult('Host is up and running', Result::GOOD);
             }
         }
 
