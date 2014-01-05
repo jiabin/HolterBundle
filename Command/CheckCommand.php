@@ -17,7 +17,7 @@ class CheckCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('holter:run')
+            ->setName('holter:check')
             ->setDescription('Runs health checks')
         ;
     }

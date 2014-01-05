@@ -45,28 +45,9 @@ class JiabinHolterExtension extends Extension
             
             $definition = new Definition($check['class'], array($name, $check['options']));
             $definition->addMethodCall('setCheckFactory', array(new Reference('holter.check_factory')));
-
-            // Optional definition values
-            $this->setOptionalDefinitionValues($definition, $check, array('label', 'icon'));
             
             $service = $container->setDefinition($serviceId, $definition);
             $service->addTag('holter.check');
-        }
-    }
-
-    /**
-     * Set optionalDefinitionValues
-     * 
-     * @param Definition $definition
-     * @param array      $check
-     * @param array      $fields
-     */
-    private function setOptionalDefinitionValues(Definition $definition, $check, $fields = array())
-    {
-        foreach ($fields as $field) {
-            if (array_key_exists($field, $check)) {
-                $definition->addMethodCall('set'.ucfirst($field), array($check['label']));
-            }
         }
     }
 

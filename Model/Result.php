@@ -146,7 +146,7 @@ abstract class Result implements ResultInterface
             'message'     => $this->message,
             'status'      => $this->status,
             'status_name' => $this->getStatusName(),
-            'created_at'  => $this->createdAt
+            'created_at'  => $this->createdAt->format('c')
         );
     }
 
