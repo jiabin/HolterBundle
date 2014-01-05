@@ -1,0 +1,110 @@
+/* Emphasis
+-------------------------------------------------- */
+
+.text-good {
+    color: #27ae60;
+}
+
+.text-minor {
+    color: #f39c12;
+}
+
+.text-major {
+    color: #c0392b;
+}
+
+.text-unknown {
+    color: #7f8c8d;
+}
+
+/* Alerts
+-------------------------------------------------- */
+
+.alert-good {
+    background-color: #27ae60;
+    border-color: #27ae60;
+    color: #ecf0f1;
+}
+
+.alert-minor {
+    background-color: #f39c12;
+    border-color: #f39c12;
+    color: #ecf0f1;
+}
+
+.alert-major {
+    background-color: #c0392b;
+    border-color: #c0392b;
+    color: #ecf0f1;
+}
+
+.alert-unknown {
+    background-color: #7f8c8d;
+    border-color: #7f8c8d;
+    color: #ecf0f1;
+}
+
+/* Badges
+-------------------------------------------------- */
+
+.badge-good {
+    background-color: #27ae60;
+}
+
+.badge-minor {
+    background-color: #f39c12;
+}
+
+.badge-major {
+    background-color: #c0392b;
+}
+
+.badge-unknown {
+    background-color: #7f8c8d;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+
+html,
+body {
+  height: 100%;
+  /* The html and body elements cannot have any padding or margin. */
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto;
+  /* Negative indent footer by its height */
+  margin: 0 auto -30px;
+  /* Pad bottom by footer height */
+  padding: 0 0 30px;
+}
+
+/* Set the fixed height of the footer here */
+#footer {
+  height: 30px;
+}
+
+#footer .container {
+    border-top: 1px solid #eee;
+}
+
+#footer .text-muted {
+    font-size: 11px;
+    margin: 5px 0;
+}
+
+/* Custom page CSS
+-------------------------------------------------- */
+
+.container {
+    max-width: 800px;
+}
+
+.page-header a {
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+}
