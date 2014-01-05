@@ -16,7 +16,7 @@ class DefaultController extends Controller
 
         $response = new Response();
         $response->setPublic();
-        $response->setSharedMaxAge(600);
+        $response->setSharedMaxAge(30);
 
         return $this->render('JiabinHolterBundle:Default:index.html.twig', array(
             'status' => $cf->createStatus()
