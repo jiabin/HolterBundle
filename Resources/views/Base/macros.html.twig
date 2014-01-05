@@ -1,3 +1,30 @@
+{% macro alert(status) %}
+    {% set texts = { 
+        'good': [
+            "Ray, next time someone asks you if you're a god, you say yes!",
+            "Smooth and easy!",
+            "I'm king of the world!"
+        ],
+        'minor': [
+            "I taw a putty tat!",
+            "I've got a feeling we're not in Kansas anymore!"
+        ],
+        'major': [
+            "Oh snap! Major system outage!",
+            "I love the smell of napalm in the morning!"
+        ],
+        'unknown': [
+            "Status unknown!"
+        ]
+    } %}
+    
+    {% if texts[status] is defined %}
+        <div class="alert alert-{{ status }}">
+            <p>{{ random(texts[status]) }}</p>
+        </div>
+    {% endif %}
+{% endmacro %}
+
 {% macro icon(status) %}
     <span class="glyphicon
     {% if status == 'good' %}

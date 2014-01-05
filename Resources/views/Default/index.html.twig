@@ -6,9 +6,7 @@
 {% endblock %}
 
 {% block body %}
-    <div class="alert alert-good">
-        <p>Ray, next time someone asks you if you're a god, you say yes!</p>
-    </div>
+    {{ macros.alert(status.statusName) }}
 
     <div class="row">
         <div class="col-md-9">
@@ -42,34 +40,4 @@
             </dl>
         </div>
     </div>
-
-    <!--
-    <div class="alert alert-good">
-        <p>Smooth and easy!</p>
-    </div>
-
-    <div class="alert alert-good">
-        <p>I'm king of the world!</p>
-    </div>
-
-    <div class="alert alert-good">
-        <p>Ray, next time someone asks you if you're a god, you say YES!</p>
-    </div>
-
-    <div class="alert alert-minor">
-        <p>I taw a putty tat!</p>
-    </div>
-
-    <div class="alert alert-minor">
-        <p>I've got a feeling we're not in Kansas anymore!</p>
-    </div>
-
-    <div class="alert alert-major">
-        <p>Oh snap! Major system outage!</p>
-    </div>
-
-    <div class="alert alert-major">
-        <p>I love the smell of napalm in the morning!</p>
-    </div>
-    -->
 {% endblock %}
