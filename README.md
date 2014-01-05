@@ -6,9 +6,7 @@ Currently it only supports MongoDB (although adding ORM should be fairly simple)
 
 ## Documentation
 
-The bulk of the documentation is stored in the `Resources/doc/index.md` file in this bundle:
-
-[Read the Documentation for master](https://github.com/jiabin/HolterBundle/blob/master/Resources/doc/index.md)
+Documentation not ready!
 
 ## Installation
 
