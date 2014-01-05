@@ -1,0 +1,26 @@
+{% set renderBackButton = flow.getCurrentStepNumber() in (flow.getFirstStepNumber() + 1) .. flow.getLastStepNumber() %}
+<div class="text-right button_count_{% if renderBackButton %}3{% else %}2{% endif %}">
+    {#
+        Default button (the one trigged by pressing the enter/return key) must be defined first.
+        Thus, all buttons are defined in reverse order and will be reversed again via CSS.
+        See http://stackoverflow.com/questions/1963245/multiple-submit-buttons-specifying-default-button
+    #}
+    <button class="btn btn-primary" type="submit" class="craue_formflow_button_last">
+        {%- if flow.getCurrentStepNumber() < flow.getLastStepNumber() -%}
+            Next
+        {%- else -%}
+            Finish
+        {%- endif -%}
+    </button>
+
+    {% if renderBackButton %}
+        {# see http://www.html5rocks.com/en/tutorials/forms/html5forms/ #}
+        <button class="btn btn-warning" type="submit" name="{{ flow.getFormTransitionKey() }}" value="back" formnovalidate="formnovalidate">
+            Back
+        </button>
+    {% endif %}
+
+    <button class="btn btn-default" type="submit" class="craue_formflow_button_first" name="{{ flow.getFormTransitionKey() }}" value="reset" formnovalidate="formnovalidate">
+        Reset
+    </button>
+</div>

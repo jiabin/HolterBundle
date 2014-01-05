@@ -4,18 +4,21 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
+        {% block head %}
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>{% block title %}{{ title|default('Holter') }}{% endblock %}</title>
         <meta name="description" content="This page reports on known incidents affecting offered services">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        {% if status is defined %}<meta http-equiv="refresh" content="30">{% endif %}
+        {% block meta %}{% endblock %}
 
         <link rel="stylesheet" href="/components/normalize-css/normalize.css">
         <link rel="stylesheet" href="/components/html5-boilerplate/css/main.css">
         <link rel="stylesheet" href="/components/bootstrap/css/bootstrap.min.css">
         <link rel="stylesheet" href="/bundles/jiabinholter/css/main.css">
         <script src="/components/modernizr/modernizr.js"></script>
+        {% block stylesheets %}{% endblock %}
+        {% endblock %}
     </head>
     <body>
         <!--[if lt IE 7]>
@@ -29,6 +32,29 @@
                     <h2>{% block page_header %}<a href="{{ path('holter') }}">{{ title|default('Holter') }}</a>{% endblock %}</h2>
                 </div>
 
+                {% block flashes %}
+                    {% for flashMessage in app.session.flashbag.get('success') %}
+                        <div class="alert alert-success">
+                            {{ flashMessage }}
+                        </div>
+                    {% endfor %}
+                    {% for flashMessage in app.session.flashbag.get('error') %}
+                        <div class="alert alert-error">
+                            {{ flashMessage }}
+                        </div>
+                    {% endfor %}
+                    {% for flashMessage in app.session.flashbag.get('notice') %}
+                        <div class="alert alert-warning">
+                            {{ flashMessage }}
+                        </div>
+                    {% endfor %}
+                    {% for flashMessage in app.session.flashbag.get('info') %}
+                        <div class="alert alert-info">
+                            {{ flashMessage }}
+                        </div>
+                    {% endfor %}
+                {% endblock flashes %}
+
                 {% block body %}{% endblock %}
             </div>
 
@@ -41,6 +67,12 @@
                     &nbsp;|&nbsp;
                     <a href="{{ path('holter_api_doc') }}">Api</a>
                     &nbsp;|&nbsp;
+                    {% if app.user %}
+                        <a href="{{ path('_security_logout') }}">Logout</a>
+                    {% else %}
+                        <a href="{{ path('_security_login') }}">Login</a>
+                    {% endif %}
+                    &nbsp;|&nbsp;
                     <a href="https://github.com/jiabin/holter">Source</a>
                 </p>
                 <p class="text-muted pull-right">Powered by <a href="https://github.com/jiabin/holter">Holter</a></p>
@@ -49,7 +81,9 @@
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+        <script src="/components/bootstrap/js/bootstrap.min.js"></script>
         <script src="/bundles/jiabinholter/js/plugins.js"></script>
         {% if status is defined %}<script>changeFavicon('{{ status.statusName }}');</script>{% endif %}
+        {% block javascripts %}{% endblock %}
     </body>
 </html>

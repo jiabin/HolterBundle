@@ -2,6 +2,8 @@
 
 namespace Jiabin\HolterBundle\Check;
 
+use Symfony\Component\Form\FormBuilderInterface;
+
 interface CheckInterface
 {
     /**
@@ -10,4 +12,9 @@ interface CheckInterface
      * @return Result
      */
     public function check();
+
+    /**
+     * Build options form
+     */
+    static function buildOptionsForm(FormBuilderInterface $builder, array $options);
 }

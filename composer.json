@@ -16,7 +16,8 @@
         "doctrine/common": ">=2.1.3",
         "components/html5-boilerplate": "*",
         "components/bootstrap": "*",
-        "twig/extensions": "*"
+        "twig/extensions": "*",
+        "craue/formflow-bundle": "~2.0"
     },
     "suggest": {
         "doctrine/mongodb-odm-bundle": ">=2.1.0"

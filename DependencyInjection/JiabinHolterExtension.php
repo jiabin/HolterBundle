@@ -27,28 +27,42 @@ class JiabinHolterExtension extends Extension
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
         $loader->load('doctrine/' . $config['db_driver'] . '.xml');
+
+        $checkClasses = array_merge($config['check_classes'], $this->getDefaultCheckClasses());
         
-        $this->addChecks($container, $config['checks']);
+        $this->addCheckClasses($container, $checkClasses);
         $this->setDoctrine($container);
+    }
+
+    /**
+     * Get default check classes
+     * 
+     * @return array
+     */
+    private function getDefaultCheckClasses()
+    {
+        return array(
+            'Jiabin\HolterBundle\Check\HttpCheck',
+            'Jiabin\HolterBundle\Check\MongoCheck'
+        );
     }
 
     /**
      * Add checks
      * 
      * @param ContainerBuilder $container
-     * @param array            $checks
+     * @param array            $checkClasses
      */
-    private function addChecks(ContainerBuilder $container, $checks)
+    private function addCheckClasses(ContainerBuilder $container, $checkClasses)
     {
-        foreach ($checks as $name => $check) {
-            $serviceId = 'holter.'.$name.'.check';
-            
-            $definition = new Definition($check['class'], array($name, $check['options']));
-            $definition->addMethodCall('setCheckFactory', array(new Reference('holter.check_factory')));
-            
-            $service = $container->setDefinition($serviceId, $definition);
-            $service->addTag('holter.check');
+        $checkFactory = $container->getDefinition('holter.check_factory');
+        foreach ($checkClasses as $class) {
+            $type = $class::$type;
+            $checkFactory->addMethodCall('addType', array($type, $class));
         }
+
+        // Load checks
+        $checkFactory->addMethodCall('loadChecks', array());
     }
 
     /**

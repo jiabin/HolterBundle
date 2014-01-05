@@ -3,10 +3,15 @@
 namespace Jiabin\HolterBundle\Check;
 
 use Jiabin\HolterBundle\Model\Result;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\FormBuilderInterface;
 
 class MongoCheck extends Check
 {
+    /**
+     * {@inheritdoc}
+     */
+    static $type = 'mongo';
+
     /**
      * {@inheritdoc}
      */
@@ -19,12 +24,12 @@ class MongoCheck extends Check
 
         try {
             $m = new \MongoClient("mongodb://".$this->options['host'], $auth);
-            $result = $this->buildResult('Mongodb is up & running', Result::GOOD);
+            $result = $this->buildResult('Mongo is up and running', Result::GOOD);
         } catch (\Exception $e) {
             if (strpos($e->getMessage(), 'Operation timed out') !== false) {
-                $result = $this->buildResult('Mongodb connection timed-out', Result::MAJOR);
+                $result = $this->buildResult('Mongo connection timed-out', Result::MAJOR);
             } else {
-                $result = $this->buildResult('Mongodb not responding', Result::MAJOR);
+                $result = $this->buildResult('Mongo not responding', Result::MAJOR);
             }
         }
 
@@ -34,14 +39,24 @@ class MongoCheck extends Check
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public static function buildOptionsForm(FormBuilderInterface $builder, array $options)
     {
-        $resolver->setRequired(array('host'));
-
-        $resolver->setDefaults(array(
-            'username' => null,
-            'password' => null,
-            'timeout'  => 1000
-        ));
+        $builder
+            ->add('host', 'text', array(
+                'required' => true
+            ))
+            ->add('username', 'text', array(
+                'required' => false,
+                'data' => null
+            ))
+            ->add('password', 'text', array(
+                'required' => false,
+                'data' => null
+            ))
+            ->add('timeout', 'integer', array(
+                'required' => false,
+                'data' => 1000
+            ))
+        ;
     }
 }

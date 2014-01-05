@@ -9,20 +9,27 @@
     {{ macros.alert(status.statusName) }}
 
     <div class="row">
+        {% if status.results|length > 0 %}
         <div class="col-md-9">
-            {% if status.results|length > 0 %}
-            <ul class="list-group">
-                {% for result in status.results %}
-                <li class="list-group-item">
-                    <span class="badge badge-{{ result.statusName }}">{{ macros.icon(result.statusName) }}</span>
-                    {{ result.checkName }}
-                    {% if result.message %}<small class="text-muted">{{ result.message }}</small>{% endif %}
-                </li>
-                {% endfor %}
-            </ul>
-            {% else %}
-
-            {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}<form action="{{ path('holter_admin_delete_check') }}" class="checks" method="POST">{% endif %}
+                <ul class="list-group">
+                    {% for result in status.results %}
+                    <li class="list-group-item">
+                        <span class="badge badge-{{ result.statusName }}">{{ macros.icon(result.statusName) }}</span>
+                        {% if is_granted('ROLE_ADMIN') %}<input type="checkbox" name="checks[]" value="{{ result.checkName }}" />{% endif %}
+                        {{ result.checkName }}
+                        {% if result.message %}<small class="text-muted">{{ result.message }}</small>{% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% if is_granted('ROLE_ADMIN') %}
+                <div class="text-right">
+                    <button type="submit" onclick="return confirm('Are you sure you want to delete selected checks?');" class="btn btn-danger delete-check-btn hidden"><i class="glyphicon glyphicon-remove"></i> Delete selected</button>
+                    &nbsp;
+                    <a href="{{ path('holter_admin_new_check') }}" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i> Add new check</a>
+                </div>
+                {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}</form>{% endif %}
         </div>
         <div class="col-md-3 text-right">
             <dl>
@@ -39,5 +46,41 @@
                 </dd>
             </dl>
         </div>
+        {% else %}
+        <div class="col-md-12">
+            <div class="alert alert-minor text-center">
+                <p class="glyphicon glyphicon-question-sign huge-icon"></p>
+                <p>No checks defined yet!</p>
+            </div>
+            {% if is_granted('ROLE_ADMIN') %}
+            <div class="text-right">
+                <a href="{{ path('holter_admin_new_check') }}" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i> Add new check</a>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
     </div>
+{% endblock %}
+
+{% block javascripts %}
+<script>setTimeout(function () { location.reload(); }, 30000);</script>
+{% if is_granted('ROLE_ADMIN') %}
+<script>
+$(function() {
+    toggleDeleteButton();
+    $("form.checks input[type=checkbox]").change(function() {
+        toggleDeleteButton();
+    });
+    function toggleDeleteButton() {
+        var state = 'addClass';
+        $("form.checks input[type=checkbox]").each(function(e, i) {
+            if ($(this).is(':checked')) {
+                state = 'removeClass';
+            }
+        });
+        $(".delete-check-btn")[state]('hidden');
+    }
+});
+</script>
+{% endif %}
 {% endblock %}

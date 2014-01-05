@@ -3,6 +3,11 @@ holter:
     defaults:  { _controller:  JiabinHolterBundle:Default:index }
     pattern: /
 
+# Admin
+holter_admin:
+    resource: "@JiabinHolterBundle/Resources/config/routing/admin.yml"
+    prefix:   /
+
 # Api
 holter_api:
     resource: "@JiabinHolterBundle/Resources/config/routing/api.yml"

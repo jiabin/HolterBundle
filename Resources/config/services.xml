@@ -7,6 +7,8 @@
     <parameters>
         <parameter key="holter.event_subscriber.class">Jiabin\HolterBundle\Event\EventSubscriber</parameter>
         <parameter key="holter.check_factory.class">Jiabin\HolterBundle\Factory\CheckFactory</parameter>
+        <parameter key="holter.form.check.class">Jiabin\HolterBundle\Form\Type\CheckType</parameter>
+        <parameter key="holter.form.flow.check.class">Jiabin\HolterBundle\Form\Flow\CheckFlow</parameter>
     </parameters>
 
     <services>
@@ -18,7 +20,20 @@
         <!-- Check Factory -->
         <service id="holter.check_factory" class="%holter.check_factory.class%">
             <argument /> <!-- Replaced in bundle extension -->
-            <argument>%holter.check_result.doctrine.class%</argument>
+            <argument>%holter.result.doctrine.class%</argument>
+            <argument>%holter.check.doctrine.class%</argument>
+        </service>
+
+        <!-- Check Form Type -->
+        <service id="holter.form.check" class="%holter.form.check.class%">
+            <argument type="service" id="holter.check_factory" />
+            <tag name="form.type" alias="check" />
+        </service>
+        <!-- Check Form Flow -->
+        <service id="holter.form.flow.check" class="%holter.form.flow.check.class%" parent="craue.form.flow" scope="request">
+            <call method="setFormType">
+                <argument type="service" id="holter.form.check" />
+            </call>
         </service>
     </services>
 

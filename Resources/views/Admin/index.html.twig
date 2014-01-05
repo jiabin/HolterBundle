@@ -1,0 +1,46 @@
+{% extends "JiabinHolterBundle:Base:layout.html.twig" %}
+
+{% block page_header %}
+    {{ parent() }} <small>admin</small>
+{% endblock %}
+
+{% block body %}
+    
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default panel-belize">
+                {% if checks|length > 0 %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Token</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for check in checks %}
+                            <tr>
+                                <td>{{ check.name }}</td>
+                                <td>{{ check.type }}</td>
+                                <td>{{ check.token }}</td>
+                                <td>
+                                    <a href="{{ path('holter_admin_delete_check', {name: check.name}) }}" onclick="return confirm('Are you sure that you want to delete this check?');" class="btn btn-danger btn-xs">Delete</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="panel-heading">You don't have any checks yet!</div>
+                {% endif %}
+                <div class="panel-footer text-right">
+                    <a href="{{ path('holter_admin_new_check') }}" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i> Add new check</a>
+                </div>
+            </div>  
+        </div>
+    </div>
+    
+{% endblock %}

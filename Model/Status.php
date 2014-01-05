@@ -7,7 +7,7 @@ class Status implements StatusInterface
     /**
      * @var integer
      */
-    protected $status = Result::UNKNOWN;
+    protected $status;
 
     /**
      * @var array
@@ -37,7 +37,10 @@ class Status implements StatusInterface
     public function getStatus()
     {
         foreach ($this->getResults() as $result) {
-            if ($result->getStatus() !== Result::UNKNOWN || $result->getStatus() > $this->status) {
+            if ($result->getStatus() === Result::UNKNOWN) {
+                continue;
+            }
+            if (!isset($status) || $result->getStatus() > $status) {
                 $status = $result->getStatus();
             }
         }

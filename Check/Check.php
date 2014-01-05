@@ -3,8 +3,6 @@
 namespace Jiabin\HolterBundle\Check;
 
 use Jiabin\HolterBundle\Factory\CheckFactory;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 abstract class Check implements CheckInterface
 {
@@ -12,6 +10,11 @@ abstract class Check implements CheckInterface
      * @var string
      */
     protected $name;
+
+    /**
+     * @var string
+     */
+    public static $type;
 
     /**
      * @var array
@@ -31,25 +34,15 @@ abstract class Check implements CheckInterface
      */
     public function __construct($name, $options = array())
     {
-        $resolver = new OptionsResolver();
-        $this->setDefaultOptions($resolver);
-
         $this->name = $name;
         $this->label = $name;
-        $this->options = $resolver->resolve($options);
+        $this->options = $options;
     }
 
     /**
      * {@inheritdoc}
      */
     abstract public function check();
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-    }
 
     /**
      * {@inheritdoc}
@@ -75,5 +68,17 @@ abstract class Check implements CheckInterface
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getType()
+    {
+        if (is_null(static::$type)) {
+            throw new \Exception('Check type must be set');
+        }
+
+        return static::$type;
     }
 }

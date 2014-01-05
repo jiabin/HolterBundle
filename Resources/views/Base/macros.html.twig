@@ -12,13 +12,10 @@
         'major': [
             "Oh snap! Major system outage!",
             "I love the smell of napalm in the morning!"
-        ],
-        'unknown': [
-            "Status unknown!"
         ]
     } %}
     
-    {% if texts[status] is defined %}
+    {% if texts[status] is defined and status != 'unknown' %}
         <div class="alert alert-{{ status }}">
             <p>{{ random(texts[status]) }}</p>
         </div>

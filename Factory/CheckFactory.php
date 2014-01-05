@@ -12,6 +12,11 @@ class CheckFactory
     /**
      * @var array
      */
+    protected $types = array();
+
+    /**
+     * @var array
+     */
     protected $checks = array();
 
     /**
@@ -22,17 +27,82 @@ class CheckFactory
     /**
      * @var string
      */
-    protected $resultClass;
+    public $resultClass;
+
+    /**
+     * @var string
+     */
+    public $checkClass;
 
     /**
      * Class constructor
      *
      * @param ObjectManager $om
      */
-    public function __construct(ObjectManager $om, $resultClass)
+    public function __construct(ObjectManager $om, $resultClass, $checkClass)
     {
         $this->om = $om;
         $this->resultClass = $resultClass;
+        $this->checkClass = $checkClass;
+    }
+
+    /**
+     * Get objectManager
+     * 
+     * @return ObjectManager
+     */
+    public function getObjectManager()
+    {
+        return $this->om;
+    }
+
+    /**
+     * Add type
+     * 
+     * @param string $type
+     * @param string $class
+     */
+    public function addType($type, $class)
+    {
+        $this->types[$type] = $class;
+    }
+
+    /**
+     * Get checkTypes
+     * 
+     * @return array
+     */
+    public function getTypes()
+    {
+        return $this->types;
+    }
+
+    /**
+     * Get typeClass
+     * 
+     * @return array
+     */
+    public function getTypeClass($type)
+    {
+        return $this->types[$type];
+    }
+
+    /**
+     * Load checks
+     */
+    public function loadChecks()
+    {
+        foreach ($this->getAvailableChecks() as $check) {
+            $type = $check->getType();
+            if (!$type or !array_key_exists($type, $this->getTypes())) {
+                throw new \Exception('Invalid check type given');
+            }
+
+            $className = $this->getTypeClass($type);
+            $class = new $className($check->getName(), $check->getOptions());
+            $class->setCheckFactory($this);
+            $this->addCheck($class);
+        }
     }
 
     /**
@@ -58,6 +128,16 @@ class CheckFactory
     public function getChecks()
     {
         return $this->checks;
+    }
+
+    /**
+     * Get available checks
+     * 
+     * @return array
+     */
+    public function getAvailableChecks()
+    {
+        return $this->om->getRepository($this->checkClass)->findAll();
     }
 
     /**

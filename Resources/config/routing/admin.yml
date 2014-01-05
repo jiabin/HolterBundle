@@ -1,0 +1,9 @@
+# Admin
+holter_admin_new_check:
+    defaults: { _controller:  JiabinHolterBundle:Admin:newCheck }
+    pattern:  /admin/check/new
+
+holter_admin_delete_check:
+    defaults: { _controller:  JiabinHolterBundle:Admin:deleteCheck }
+    pattern:  /admin/check/delete
+    methods:  [POST]
