@@ -1,0 +1,13 @@
+{% macro icon(status) %}
+    <span class="glyphicon
+    {% if status == 'good' %}
+        glyphicon-ok-sign
+    {% elseif status == 'minor' %}
+        glyphicon-exclamation-sign
+    {% elseif status == 'major' %}
+        glyphicon-remove-sign
+    {% else %}
+        glyphicon-question-sign
+    {% endif %}
+    "></span>
+{% endmacro %}

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>{% block title %}{{ title|default('Holter') }}{% endblock %}</title>
+        <meta name="description" content="This page reports on known incidents affecting offered services">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% if status is defined %}<meta http-equiv="refresh" content="30">{% endif %}
+
+        <link rel="stylesheet" href="/components/normalize-css/normalize.css">
+        <link rel="stylesheet" href="/components/html5-boilerplate/css/main.css">
+        <link rel="stylesheet" href="/components/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/bundles/jiabinholter/css/main.css">
+        <script src="/components/modernizr/modernizr.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div id="wrap">
+
+            <div class="container">
+                <div class="page-header">
+                    <h2>{% block page_header %}<a href="{{ path('holter') }}">{{ title|default('Holter') }}</a>{% endblock %}</h2>
+                </div>
+
+                {% block body %}{% endblock %}
+            </div>
+
+        </div>
+
+        <div id="footer">
+            <div class="container">
+                <p class="text-muted pull-left">
+                    <a href="{{ path('holter') }}">Home</a>
+                    &nbsp;|&nbsp;
+                    <a href="{{ path('holter_api_doc') }}">Api</a>
+                    &nbsp;|&nbsp;
+                    <a href="https://github.com/jiabin/holter">Source</a>
+                </p>
+                <p class="text-muted pull-right">Powered by <a href="https://github.com/jiabin/holter">Holter</a></p>
+            </div>
+        </div>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+        <script src="/bundles/jiabinholter/js/plugins.js"></script>
+        {% if status is defined %}<script>changeFavicon('{{ status.statusName }}');</script>{% endif %}
+    </body>
+</html>

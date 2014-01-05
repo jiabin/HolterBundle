@@ -1,0 +1,75 @@
+{% extends "JiabinHolterBundle:Base:layout.html.twig" %}
+{% import "JiabinHolterBundle:Base:macros.html.twig" as macros %}
+
+{% block page_header %}
+    {{ parent() }} <img src="{{ path('holter_api_badge') }}" alt="Status badge">
+{% endblock %}
+
+{% block body %}
+    <div class="alert alert-good">
+        <p>Ray, next time someone asks you if you're a god, you say yes!</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-9">
+            {% if status.results|length > 0 %}
+            <ul class="list-group">
+                {% for result in status.results %}
+                <li class="list-group-item">
+                    <span class="badge badge-{{ result.statusName }}">{{ macros.icon(result.statusName) }}</span>
+                    {{ result.checkName }}
+                    {% if result.message %}<small class="text-muted">{{ result.message }}</small>{% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+
+            {% endif %}
+        </div>
+        <div class="col-md-3 text-right">
+            <dl>
+                <dt>Last minor outage:</dt>
+                <dd>
+                    {% if status.lastMinor %}{{ status.lastMinor|localizeddate('medium', 'short') }}{% else %}never{% endif %}
+                </dd>
+            </dl>
+            <hr>
+            <dl>
+                <dt>Last major outage:</dt>
+                <dd>
+                    {% if status.lastMajor %}{{ status.lastMajor|localizeddate('medium', 'short') }}{% else %}never{% endif %}
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <!--
+    <div class="alert alert-good">
+        <p>Smooth and easy!</p>
+    </div>
+
+    <div class="alert alert-good">
+        <p>I'm king of the world!</p>
+    </div>
+
+    <div class="alert alert-good">
+        <p>Ray, next time someone asks you if you're a god, you say YES!</p>
+    </div>
+
+    <div class="alert alert-minor">
+        <p>I taw a putty tat!</p>
+    </div>
+
+    <div class="alert alert-minor">
+        <p>I've got a feeling we're not in Kansas anymore!</p>
+    </div>
+
+    <div class="alert alert-major">
+        <p>Oh snap! Major system outage!</p>
+    </div>
+
+    <div class="alert alert-major">
+        <p>I love the smell of napalm in the morning!</p>
+    </div>
+    -->
+{% endblock %}
