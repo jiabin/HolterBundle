@@ -4,7 +4,7 @@ namespace Jiabin\HolterBundle\Factory;
 
 use Jiabin\HolterBundle\Model\Result;
 use Jiabin\HolterBundle\Model\Status;
-use Jiabin\HolterBundle\Check\CheckInterface;
+use Jiabin\HolterBundle\Model\CheckInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class CheckFactory
@@ -12,7 +12,7 @@ class CheckFactory
     /**
      * @var array
      */
-    protected $types = array();
+    protected $checkTypes = array();
 
     /**
      * @var array
@@ -57,85 +57,61 @@ class CheckFactory
     }
 
     /**
-     * Add type
+     * Add checkType
      * 
-     * @param string $type
+     * @param string $name
      * @param string $class
      */
-    public function addType($type, $class)
+    public function addCheckType($name, $class)
     {
-        $this->types[$type] = $class;
+        $this->checkTypes[$name] = $class;
     }
 
     /**
-     * Get checkTypes
+     * Get types
      * 
      * @return array
      */
-    public function getTypes()
+    public function getCheckTypes()
     {
-        return $this->types;
+        return $this->checkTypes;
     }
 
     /**
      * Get typeClass
-     * 
+     *
+     * @param  string $name
      * @return array
      */
-    public function getTypeClass($type)
+    public function getCheckTypeClass($name)
     {
-        return $this->types[$type];
+        return $this->checkTypes[$name];
     }
 
     /**
-     * Load checks
-     */
-    public function loadChecks()
-    {
-        foreach ($this->getAvailableChecks() as $check) {
-            $type = $check->getType();
-            if (!$type or !array_key_exists($type, $this->getTypes())) {
-                throw new \Exception('Invalid check type given');
-            }
-
-            $className = $this->getTypeClass($type);
-            $class = new $className($check->getName(), $check->getOptions());
-            $class->setCheckFactory($this);
-            $this->addCheck($class);
-        }
-    }
-
-    /**
-     * Add check
+     * Execute check
      * 
-     * @param string         $name
-     * @param CheckInterface $check
+     * @param  CheckInterface $check
+     * @return Result
      */
-    public function addCheck(CheckInterface $check)
-    {
-        if (array_key_exists($check->getName(), $this->checks)) {
-            throw new \Exception('Check names must be unique!');
-        }
-        
-        $this->checks[$check->getName()] = $check;
+    public function check(CheckInterface $check)
+    {       
+        $className = $this->getCheckTypeClass($check->getType());
+        $class = new $className($check->getOptions());
+        $class->setCheckFactory($this);
+
+        $result = $class->check();
+        $result->setCheck($check);
+
+        return $result;
     }
 
     /**
      * Get checks
      * 
-     * @return array
+     * @return Collection
      */
     public function getChecks()
-    {
-        return $this->checks;
-    }
-
-    /**
-     * Get available checks
-     * 
-     * @return array
-     */
-    public function getAvailableChecks()
     {
         return $this->om->getRepository($this->checkClass)->findAll();
     }
@@ -150,8 +126,8 @@ class CheckFactory
         $status = new Status();
 
         // Get results for each check
-        foreach ($this->getChecks() as $name => $check) {
-            $result = $this->getResult($name);
+        foreach ($this->getChecks() as $check) {
+            $result = $this->getResult($check);
             $status->addResult($result);
         }
 
@@ -172,32 +148,40 @@ class CheckFactory
     /**
      * Create result
      *
-     * @param  string  $checkName
-     * @param  string  $message
-     * @param  integer $status
+     * @param  string         $message
+     * @param  integer        $status
+     * @param  CheckInterface $check
      * @return Result
      */
-    public function createResult($checkName, $message, $status)
+    public function createResult($message, $status, CheckInterface $check = null)
     {
         $resultRepository = $this->om->getRepository($this->resultClass);
         $className = $resultRepository->getClassName();
         
-        return new $className($checkName, $message, $status);
+        $result = new $className($message, $status);
+        if ($check) {
+            $result->setCheck($check);
+        }
+
+        return $result;
     }
 
     /**
      * Get result
-     * 
+     *
+     * @param  CheckInterface $check
      * @return Result
      */
-    public function getResult($checkName)
+    public function getResult(CheckInterface $check)
     {
         $resultRepository = $this->om->getRepository($this->resultClass);
-        $results = $resultRepository->findBy(array('checkName' => $checkName), array('createdAt' => 'DESC'), 1);
-        if ($results->hasNext()) {
-            return $results->getNext();
+        $builder = $resultRepository->createQueryBuilder();
+        $result = $builder->field('check')->references($check)->getQuery()->getSingleResult();
+        
+        if (!$result) {
+            $result = $this->createResult('n/a', Result::UNKNOWN, $check);
         }
 
-        return $this->createResult($checkName, 'n/a', Result::UNKNOWN);
+        return $result;
     }
 }

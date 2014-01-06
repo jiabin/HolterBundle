@@ -28,22 +28,24 @@ class JiabinHolterExtension extends Extension
         $loader->load('services.xml');
         $loader->load('doctrine/' . $config['db_driver'] . '.xml');
 
-        $checkClasses = array_merge($config['check_classes'], $this->getDefaultCheckClasses());
+        $types = array_merge($config['check_types'], $this->getDefaultCheckTypes());
         
-        $this->addCheckClasses($container, $checkClasses);
+        $this->addCheckTypes($container, $types);
         $this->setDoctrine($container);
     }
 
     /**
-     * Get default check classes
+     * Get default check types
      * 
      * @return array
      */
-    private function getDefaultCheckClasses()
+    private function getDefaultCheckTypes()
     {
         return array(
-            'Jiabin\HolterBundle\Check\HttpCheck',
-            'Jiabin\HolterBundle\Check\MongoCheck'
+            'Jiabin\HolterBundle\CheckType\Http',
+            'Jiabin\HolterBundle\CheckType\Ping',
+            'Jiabin\HolterBundle\CheckType\Mongo',
+            'Jiabin\HolterBundle\CheckType\Redis'
         );
     }
 
@@ -51,18 +53,15 @@ class JiabinHolterExtension extends Extension
      * Add checks
      * 
      * @param ContainerBuilder $container
-     * @param array            $checkClasses
+     * @param array            $checkTypes
      */
-    private function addCheckClasses(ContainerBuilder $container, $checkClasses)
+    private function addCheckTypes(ContainerBuilder $container, $checkTypes)
     {
         $checkFactory = $container->getDefinition('holter.check_factory');
-        foreach ($checkClasses as $class) {
-            $type = $class::$type;
-            $checkFactory->addMethodCall('addType', array($type, $class));
+        foreach ($checkTypes as $class) {
+            $name = $class::$name;
+            $checkFactory->addMethodCall('addCheckType', array($name, $class));
         }
-
-        // Load checks
-        $checkFactory->addMethodCall('loadChecks', array());
     }
 
     /**

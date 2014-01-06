@@ -18,7 +18,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('jiabin_Holter');
+        $rootNode = $treeBuilder->root('jiabin_holter');
 
         $rootNode
             ->children()
@@ -29,8 +29,8 @@ class Configuration implements ConfigurationInterface
                         ->thenInvalid('Invalid database driver "%s"')
                     ->end()
                 ->end()
-                ->arrayNode('check_classes')
-                    ->example(array('Jiabin\HolterBundle\Check\HttpCheck'))
+                ->arrayNode('check_types')
+                    ->example(array('Jiabin\HolterBundle\Type\HttpType'))
                     ->prototype('scalar')->end()
                 ->end()
             ->end()

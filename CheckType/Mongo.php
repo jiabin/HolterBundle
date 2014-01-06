@@ -1,29 +1,29 @@
 <?php
 
-namespace Jiabin\HolterBundle\Check;
+namespace Jiabin\HolterBundle\CheckType;
 
 use Jiabin\HolterBundle\Model\Result;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class MongoCheck extends Check
+class Mongo extends CheckType
 {
     /**
      * {@inheritdoc}
      */
-    static $type = 'mongo';
+    static $name = 'mongo';
 
     /**
      * {@inheritdoc}
      */
     public function check()
     {
-        $auth = array('timeout' => $this->options['timeout']);
-        if ($this->options['username']) {
-            $auth = array_merge($auth, array("username" => $this->options['username'], "password" => $this->options['password']));
+        $auth = array('timeout' => $this->options->get('timeout'));
+        if ($this->options->get('username')) {
+            $auth = array_merge($auth, array("username" => $this->options->get('username'), "password" => $this->options->get('password')));
         }
 
         try {
-            $m = new \MongoClient("mongodb://".$this->options['host'], $auth);
+            $m = new \MongoClient("mongodb://".$this->options->get('host'), $auth);
             $result = $this->buildResult('Mongo is up and running', Result::GOOD);
         } catch (\Exception $e) {
             if (strpos($e->getMessage(), 'Operation timed out') !== false) {

@@ -8,12 +8,11 @@
     <dl>
         <dt><a href="{{ url('holter_api_status') }}.json" target="_blank">{{ path('holter_api_status') }}.json</a></dt>
         <dd>Performs all health checks and returns the results.</dd>
-        <pre>
-{
+        <pre>{
     "status": 0,
     "status_name": "good",
     "results": {
-        "http": {
+        "1": {
             "check_name": "http",
             "message": "Host is up and running",
             "status": 0,
@@ -24,13 +23,18 @@
     "last_updated": "2014-01-05T13:27:48+01:00",
     "last_minor": "2014-01-05T02:47:58+01:00",
     "last_major": "2014-01-05T02:51:24+01:00"
-}
-        </pre>
+}</pre>
     </dl>
     <dl>
         <dt><a href="{{ url('holter_api_checks') }}.json" target="_blank">{{ path('holter_api_checks') }}.json</a></dt>
         <dd>Returns all available checks.</dd>
-        <pre>["http", "mongo", "ping", "smtp", "redis"]</pre>
+        <pre>{
+    "1": "http",
+    "2": "mongo",
+    "3": "ping",
+    "4": "smtp",
+    "5": "redis"
+}</pre>
     </dl>
     <dl>
         <dt><a href="{{ url('holter_api_badge') }}.png" target="_blank">{{ path('holter_api_badge') }}.png</a></dt>

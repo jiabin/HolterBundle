@@ -1,13 +1,13 @@
 <?php
 
-namespace Jiabin\HolterBundle\Check;
+namespace Jiabin\HolterBundle\CheckType;
 
 use Symfony\Component\Form\FormBuilderInterface;
 
-interface CheckInterface
+interface CheckTypeInterface
 {
     /**
-     * Check
+     * Execute check
      *
      * @return Result
      */

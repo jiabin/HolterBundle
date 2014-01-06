@@ -1,20 +1,15 @@
 <?php
 
-namespace Jiabin\HolterBundle\Check;
+namespace Jiabin\HolterBundle\CheckType;
 
 use Jiabin\HolterBundle\Factory\CheckFactory;
 
-abstract class Check implements CheckInterface
+abstract class CheckType implements CheckTypeInterface
 {
     /**
      * @var string
      */
-    protected $name;
-
-    /**
-     * @var string
-     */
-    public static $type;
+    static $name;
 
     /**
      * @var array
@@ -32,10 +27,9 @@ abstract class Check implements CheckInterface
      * @param string $name
      * @param array  $options
      */
-    public function __construct($name, $options = array())
+    public function __construct($options = array())
     {
-        $this->name = $name;
-        $this->label = $name;
+        $options = new CheckOptions($options);
         $this->options = $options;
     }
 
@@ -59,26 +53,6 @@ abstract class Check implements CheckInterface
      */
     public function buildResult($message, $status)
     {
-        return $this->cf->createResult($this->getName(), $message, $status);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getType()
-    {
-        if (is_null(static::$type)) {
-            throw new \Exception('Check type must be set');
-        }
-
-        return static::$type;
+        return $this->cf->createResult($message, $status);
     }
 }

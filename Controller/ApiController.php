@@ -34,8 +34,12 @@ class ApiController extends Controller
     public function checksAction()
     {
         $cf = $this->get('holter.check_factory');
+        $data = array();
+        foreach ($cf->getChecks() as $check) {
+            $data[$check->getId()] = $check->getName();
+        }
 
-        $response = JsonResponse::create(array_keys($cf->getChecks()), 200);
+        $response = JsonResponse::create($data, 200);
         $response->setPublic();
         $response->setSharedMaxAge(600);
 

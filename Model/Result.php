@@ -12,9 +12,8 @@ abstract class Result implements ResultInterface
     /**
      * Class constructor
      */
-    public function __construct($checkName, $message, $status)
+    public function __construct($message, $status)
     {
-        $this->checkName = $checkName;
         $this->message   = $message;
         $this->status    = $status;
         $this->createdAt = new \DateTime();
@@ -31,39 +30,26 @@ abstract class Result implements ResultInterface
     }
 
     /**
-     * Set checkName
-     *
-     * @param  string $checkName
-     * @return self
-     */
-    public function setCheckName($checkName)
-    {
-        $this->checkName = $checkName;
-
-        return $this;
-    }
-
-    /**
-     * Get checkName
+     * Set checkId
      * 
-     * @return string
+     * @param  CheckInterface $check
+     * @return self
      */
-    public function getCheckName()
+    public function setCheck(CheckInterface $check)
     {
-        return $this->checkName;
+        $this->check = $check;
+
+        return $this;
     }
 
     /**
-     * Set message
-     *
-     * @param  string $message
-     * @return self
+     * Get checkId
+     * 
+     * @return CheckInterface
      */
-    public function setMessage($message)
+    public function getCheck()
     {
-        $this->message = $message;
-
-        return $this;
+        return $this->check;
     }
 
     /**
@@ -74,19 +60,6 @@ abstract class Result implements ResultInterface
     public function getMessage()
     {
         return $this->message;
-    }
-
-    /**
-     * Set status
-     *
-     * @param  integer $status
-     * @return self
-     */
-    public function setStatus($status)
-    {
-        $this->status = intval($status);
-
-        return $this;
     }
 
     /**
@@ -114,19 +87,6 @@ abstract class Result implements ResultInterface
     }
 
     /**
-     * Set createdAt
-     *
-     * @param  string $createdAt
-     * @return self
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
      * Get createdAt
      * 
      * @return string
@@ -142,7 +102,7 @@ abstract class Result implements ResultInterface
     public function toArray()
     {
         return array(
-            'check_name'  => $this->checkName,
+            'check'       => $this->check->getName(),
             'message'     => $this->message,
             'status'      => $this->status,
             'status_name' => $this->getStatusName(),

@@ -2,7 +2,7 @@
 
 namespace Jiabin\HolterBundle\Model;
 
-class Check
+class Check implements CheckInterface
 {
     public function __construct()
     {

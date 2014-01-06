@@ -1,16 +1,16 @@
 <?php
 
-namespace Jiabin\HolterBundle\Check;
+namespace Jiabin\HolterBundle\CheckType;
 
 use Jiabin\HolterBundle\Model\Result;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class HttpCheck extends Check
+class Http extends CheckType
 {
     /**
      * {@inheritdoc}
      */
-    public static $type = 'http';
+    static $name = 'http';
 
     /**
      * {@inheritdoc}
@@ -19,12 +19,12 @@ class HttpCheck extends Check
     {
         $start = microtime(true);
 
-        $fp = @fsockopen($this->options['host'], $this->options['port'], $errno, $errstr, 10);
+        $fp = @fsockopen($this->options->get('host'), $this->options->get('port'), $errno, $errstr, 10);
         if (!$fp) {
-            $result = $this->buildResult(sprintf('No http service running at host %s on port %s', $this->options['host'], $this->options['port']), Result::MAJOR);
+            $result = $this->buildResult(sprintf('No http service running at host %s on port %s', $this->options->get('host'), $this->options->get('port')), Result::MAJOR);
         } else {
-            $header = "GET ".$this->options['path']." HTTP/1.1\r\n";
-            $header .= "Host: ".$this->options['host']."\r\n";
+            $header = "GET ".$this->options->get('path')." HTTP/1.1\r\n";
+            $header .= "Host: ".$this->options->get('host')."\r\n";
             $header .= "Connection: close\r\n\r\n";
             fputs($fp, $header);
             $str = '';
@@ -36,11 +36,11 @@ class HttpCheck extends Check
             $stop = microtime(true);
             $duration = round(($stop - $start) * 1000, 2);
             
-            if ($this->options['statusCode'] && strpos($str, "HTTP/1.1 ".$this->options['statusCode']) !== 0) {
-                $result = $this->buildResult("Status code ".$this->options['statusCode']." does not match in response from ".$this->options['host'].":".$this->options['port'].$this->options['path'], Result::MAJOR);
-            } elseif ($this->options['content'] && !strpos($str, $this->options['content'])) {
-                $result = $this->buildResult("Content ".$this->options['content']." not found in response from ".$this->options['host'].":".$this->options['port'].$this->options['path'], Result::MAJOR);
-            } elseif ($this->options['warning_threshold'] && $duration > $this->options['warning_threshold']) {
+            if ($this->options->get('statusCode') && strpos($str, "HTTP/1.1 ".$this->options->get('statusCode')) !== 0) {
+                $result = $this->buildResult("Status code ".$this->options->get('statusCode')." does not match in response from ".$this->options->get('host').":".$this->options->get('port').$this->options->get('path'), Result::MAJOR);
+            } elseif ($this->options->get('content') && !strpos($str, $this->options->get('content'))) {
+                $result = $this->buildResult("Content ".$this->options->get('content')." not found in response from ".$this->options->get('host').":".$this->options->get('port').$this->options->get('path'), Result::MAJOR);
+            } elseif ($this->options->get('warning_threshold') && $duration > $this->options->get('warning_threshold')) {
                 $result = $this->buildResult('Requests are taking longer than usual', Result::MINOR);
             } else {
                 $result = $this->buildResult('Host is up and running', Result::GOOD);

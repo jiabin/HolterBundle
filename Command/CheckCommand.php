@@ -31,9 +31,9 @@ class CheckCommand extends ContainerAwareCommand
         $dispatcher = $container->get('event_dispatcher'); 
         $cf = $container->get('holter.check_factory');
 
-        foreach ($cf->getChecks() as $name => $check) {
-            $output->write(sprintf('Checking %s ', $name));
-            $result = $check->check();
+        foreach ($cf->getChecks() as $check) {
+            $output->write(sprintf('Checking %s ', $check->getName()));
+            $result = $cf->check($check);
             $output->writeln($this->resultString($result));
 
             $event = new CheckEvent($result);

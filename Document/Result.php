@@ -16,9 +16,9 @@ class Result extends BaseResult
     protected $id;
 
     /**
-     * @ODM\String
+     * @ODM\ReferenceOne()
      */
-    protected $checkName;
+    protected $check;
 
     /**
      * @ODM\String

@@ -27,8 +27,8 @@ class CheckType extends AbstractType
         switch ($options['flow_step']) {
             case 1:
                 $types = array();
-                foreach ($this->cf->getTypes() as $type => $class) {
-                    $types[$type] = ucfirst($type);
+                foreach ($this->cf->getCheckTypes() as $name => $class) {
+                    $types[$name] = ucfirst($name);
                 }
 
                 $builder->add('name', 'text');
@@ -42,7 +42,7 @@ class CheckType extends AbstractType
                 ));
 
                 $type = $options['data']->getType();
-                $className = $this->cf->getTypeClass($type);
+                $className = $this->cf->getCheckTypeClass($type);
                 $className::buildOptionsForm($optionsBuilder, $options);
 
                 $builder->add($optionsBuilder);

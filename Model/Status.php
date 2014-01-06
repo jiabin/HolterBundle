@@ -73,7 +73,8 @@ class Status implements StatusInterface
      */
     public function addResult(Result $result)
     {
-        $this->results[$result->getCheckName()] = $result;
+        $check = $result->getCheck();
+        $this->results[$check->getName()] = $result;
 
         if (is_null($this->lastUpdated) or $this->lastUpdated < $result->getCreatedAt()) {
             $this->lastUpdated = $result->getCreatedAt();
@@ -172,7 +173,8 @@ class Status implements StatusInterface
         }
 
         foreach ($this->getResults() as $result) {
-            $array['results'][$result->getCheckName()] = $result->toArray();
+            $check = $result->getCheck();
+            $array['results'][$check->getId()] = $result->toArray();
         }
 
         return $array;
