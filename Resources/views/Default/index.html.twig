@@ -2,7 +2,7 @@
 {% import "JiabinHolterBundle:Base:macros.html.twig" as macros %}
 
 {% block page_header %}
-    {{ parent() }} <small>status:<span class="text-good">{{ status.statusName }}</span></small>
+    {{ parent() }} <small>status:<span class="text-{{ status.statusName }}">{{ status.statusName }}</span></small>
 {% endblock %}
 
 {% block body %}
