@@ -5,6 +5,7 @@ namespace Jiabin\HolterBundle\Command;
 use Jiabin\HolterBundle\Events;
 use Jiabin\HolterBundle\Event\CheckEvent;
 use Jiabin\HolterBundle\Model\Result;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -19,6 +20,7 @@ class CheckCommand extends ContainerAwareCommand
         $this
             ->setName('holter:check')
             ->setDescription('Runs health checks')
+            ->addArgument('check', InputArgument::OPTIONAL, 'Check id to execute')
         ;
     }
 
@@ -31,7 +33,17 @@ class CheckCommand extends ContainerAwareCommand
         $dispatcher = $container->get('event_dispatcher'); 
         $cf = $container->get('holter.check_factory');
 
-        foreach ($cf->getChecks() as $check) {
+        if ($id = $input->getArgument('check')) {
+            $check = $cf->getCheck($id);
+            if (!$check) {
+                return $output->writeln('<error>Check '.$id.' not found!</error>');
+            }
+            $checks = array($check);
+        } else {
+            $checks = $cf->getChecks();
+        }
+
+        foreach ($checks as $check) {
             $output->write(sprintf('Checking %s ', $check->getName()));
             $result = $cf->check($check);
             $output->writeln($this->resultString($result));

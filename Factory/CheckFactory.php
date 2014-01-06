@@ -117,6 +117,17 @@ class CheckFactory
     }
 
     /**
+     * Get check
+     *
+     * @param  mixed          $id
+     * @return CheckInterface
+     */
+    public function getCheck($id)
+    {
+        return $this->om->getRepository($this->checkClass)->find($id);
+    }
+
+    /**
      * Create status
      * 
      * @return Status
@@ -176,7 +187,7 @@ class CheckFactory
     {
         $resultRepository = $this->om->getRepository($this->resultClass);
         $builder = $resultRepository->createQueryBuilder();
-        $result = $builder->field('check')->references($check)->getQuery()->getSingleResult();
+        $result = $builder->field('check')->references($check)->sort('createdAt', 'desc')->getQuery()->getSingleResult();
         
         if (!$result) {
             $result = $this->createResult('n/a', Result::UNKNOWN, $check);
