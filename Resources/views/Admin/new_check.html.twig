@@ -6,7 +6,7 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-4">
             {% set steps = [{ heading: 'Step 1', text: 'Basic information',
                 }, { heading: 'Step 2', text: 'Type options',
                 }, { heading: 'Step 3', text: 'Review & confirmation'}] %}
@@ -19,7 +19,7 @@
                 {% endfor %}
             </ul>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-8">
             <form action="{{ path('holter_admin_new_check') }}" role="form" method="post">
                 {% if flow.getCurrentStepNumber() == 1 %}
                     <div class="form-group">
