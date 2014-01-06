@@ -2,7 +2,7 @@
 {% import "JiabinHolterBundle:Base:macros.html.twig" as macros %}
 
 {% block page_header %}
-    {{ parent() }} <img src="{{ path('holter_api_badge') }}" alt="Status badge">
+    {{ parent() }} <small>status:<span class="text-good">{{ status.statusName }}</span></small>
 {% endblock %}
 
 {% block body %}
