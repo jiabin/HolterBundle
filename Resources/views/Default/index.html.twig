@@ -11,7 +11,7 @@
     <div class="row">
         {% if status.results|length > 0 %}
         <div class="col-sm-9">
-            {% if is_granted('ROLE_ADMIN') %}<form action="{{ path('holter_admin_delete_check') }}" class="checks" method="POST">{% endif %}
+            {% if is_granted('ROLE_ADMIN') %}<form action="{{ path('holter_admin_delete_check') }}" class="checks" method="POST" role="form">{% endif %}
                 <ul class="list-group">
                     {% for result in status.results %}
                     <li class="list-group-item">
@@ -31,7 +31,7 @@
                 {% endif %}
             {% if is_granted('ROLE_ADMIN') %}</form>{% endif %}
         </div>
-        <div class="col-sm-3 text-right">
+        <div class="col-sm-3 sidebar">
             {% if app.user %}
             <dl>
                 <dt>Logged in as {{ app.user.username }}</dt>

@@ -125,6 +125,16 @@ body {
     font-size: 100px;
 }
 
+.sidebar {
+    text-align: right;
+}
+
+@media (max-width: 767px) {
+    .sidebar {
+        text-align: center;
+    }
+}
+
 /* Form signin
 -------------------------------------------------- */
 
