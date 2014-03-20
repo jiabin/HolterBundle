@@ -2,7 +2,7 @@
 
 namespace Jiabin\HolterBundle\CheckType;
 
-use Jiabin\HolterBundle\Model\Result;
+use Jiabin\HolterBundle\Model\Status;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class Mongo extends CheckType
@@ -24,12 +24,12 @@ class Mongo extends CheckType
 
         try {
             $m = new \MongoClient("mongodb://".$this->options->get('host'), $auth);
-            $result = $this->buildResult('Mongo is up and running', Result::GOOD);
+            $result = $this->buildResult('Mongo is up and running', Status::GOOD);
         } catch (\Exception $e) {
             if (strpos($e->getMessage(), 'Operation timed out') !== false) {
-                $result = $this->buildResult('Mongo connection timed-out', Result::MAJOR);
+                $result = $this->buildResult('Mongo connection timed-out', Status::MAJOR);
             } else {
-                $result = $this->buildResult('Mongo not responding', Result::MAJOR);
+                $result = $this->buildResult('Mongo not responding', Status::MAJOR);
             }
         }
 

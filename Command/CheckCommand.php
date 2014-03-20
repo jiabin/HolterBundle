@@ -5,6 +5,7 @@ namespace Jiabin\HolterBundle\Command;
 use Jiabin\HolterBundle\Events;
 use Jiabin\HolterBundle\Event\CheckEvent;
 use Jiabin\HolterBundle\Model\Result;
+use Jiabin\HolterBundle\Model\Status;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -59,19 +60,19 @@ class CheckCommand extends ContainerAwareCommand
     private function resultString(Result $result)
     {
         switch ($result->getStatus()) {
-            case Result::GOOD:
+            case Status::GOOD:
                 $string = '<fg=green;options=bold>✔</fg=green;options=bold>';
                 break;
 
-            case Result::MINOR:
+            case Status::MINOR:
                 $string = '<fg=yellow;options=bold>!</fg=yellow;options=bold>';
                 break;
 
-            case Result::MAJOR:
+            case Status::MAJOR:
                 $string = '<fg=red;options=bold>X</fg=red;options=bold>';
                 break;
 
-            case Result::UNKNOWN:
+            case Status::UNKNOWN:
             default:
                 $string = '<fg=blue;options=bold>?</fg=blue;options=bold>';
                 break;

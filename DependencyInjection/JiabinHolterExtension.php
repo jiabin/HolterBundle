@@ -42,10 +42,13 @@ class JiabinHolterExtension extends Extension
     private function getDefaultCheckTypes()
     {
         return array(
+            'Jiabin\HolterBundle\CheckType\GitHub',
             'Jiabin\HolterBundle\CheckType\Http',
-            'Jiabin\HolterBundle\CheckType\Ping',
+            'Jiabin\HolterBundle\CheckType\Linode',
             'Jiabin\HolterBundle\CheckType\Mongo',
-            'Jiabin\HolterBundle\CheckType\Redis'
+            'Jiabin\HolterBundle\CheckType\Ping',
+            'Jiabin\HolterBundle\CheckType\Redis',
+            'Jiabin\HolterBundle\CheckType\Smtp'
         );
     }
 

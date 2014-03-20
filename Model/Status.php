@@ -37,7 +37,7 @@ class Status implements StatusInterface
     public function getStatus()
     {
         foreach ($this->getResults() as $result) {
-            if ($result->getStatus() === Result::UNKNOWN) {
+            if ($result->getStatus() === self::UNKNOWN) {
                 continue;
             }
             if (!isset($status) || $result->getStatus() > $status) {
@@ -46,7 +46,7 @@ class Status implements StatusInterface
         }
 
         if (!isset($status)) {
-            $status = Result::UNKNOWN;
+            $status = self::UNKNOWN;
         }
 
         return $status;
@@ -57,7 +57,7 @@ class Status implements StatusInterface
      */
     public function getStatusName()
     {
-        $list = Result::getStatusList();
+        $list = self::getStatusList();
 
         if (!isset($list[$this->getStatus()])) {
             return 'n/a';
@@ -178,5 +178,18 @@ class Status implements StatusInterface
         }
 
         return $array;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getStatusList()
+    {
+        return array(
+            self::GOOD    => 'good',
+            self::MINOR   => 'minor',
+            self::MAJOR   => 'major',
+            self::UNKNOWN => 'unknown',
+        );
     }
 }

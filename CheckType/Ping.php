@@ -2,7 +2,7 @@
 
 namespace Jiabin\HolterBundle\CheckType;
 
-use Jiabin\HolterBundle\Model\Result;
+use Jiabin\HolterBundle\Model\Status;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -23,14 +23,14 @@ class Ping extends CheckType
         $process->run();
 
         if (!$process->isSuccessful()) {
-            return $this->buildResult('Connection failed', Result::MAJOR);
+            return $this->buildResult('Connection failed', Status::MAJOR);
         }
 
         $output = $process->getOutput();
         preg_match_all('/time=(.*?) .*/i', $output, $matches);
 
         if (empty($matches[1])) {
-            return $this->buildResult('Connection failed', Result::MAJOR);
+            return $this->buildResult('Connection failed', Status::MAJOR);
         }
 
         $avg = 0;
@@ -39,9 +39,9 @@ class Ping extends CheckType
         }
 
         if ($this->options->get('timeout') && $avg > $this->options->get('timeout')) {
-            return $this->buildResult('Connection to host is taking more than usual', Result::MINOR);
+            return $this->buildResult('Connection to host is taking more than usual', Status::MINOR);
         } else {
-            return $this->buildResult('Host is reachable', Result::GOOD);
+            return $this->buildResult('Host is reachable', Status::GOOD);
         }
     }
 

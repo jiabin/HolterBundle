@@ -29,7 +29,13 @@
 
             <div class="container">
                 <div class="page-header">
-                    <h2>{% block page_header %}<a href="{{ path('holter') }}">{{ title|default('Holter') }}</a>{% endblock %}</h2>
+                    <h2>
+                        {% block page_header %}
+                        <a href="{{ path('holter') }}">
+                            <img src="/bundles/jiabinholter/img/logo.png" alt="Pulse designed by Nico Tzogalis from the Noun Project">
+                            {{ title|default('Holter') }}
+                        </a>
+                        {% endblock %}</h2>
                 </div>
 
                 {% block flashes %}
@@ -73,9 +79,9 @@
                         <a href="{{ path('_security_login') }}">Login</a>
                     {% endif %}
                     &nbsp;|&nbsp;
-                    <a href="https://github.com/jiabin/holter">Source</a>
+                    <a href="https://github.com/jiabin/holter" target="_blank">Source</a>
                 </p>
-                <p class="text-muted pull-right">Powered by <a href="https://github.com/jiabin/holter">Holter</a></p>
+                <p class="text-muted pull-right">Powered by <a href="https://github.com/jiabin/holter" target="_blank">Holter</a></p>
             </div>
         </div>
 

@@ -4,11 +4,6 @@ namespace Jiabin\HolterBundle\Model;
 
 abstract class Result implements ResultInterface
 {
-    const GOOD    = 0;
-    const MINOR   = 10;
-    const MAJOR   = 20;
-    const UNKNOWN = 30;
-
     /**
      * Class constructor
      */
@@ -77,7 +72,7 @@ abstract class Result implements ResultInterface
      */
     public function getStatusName()
     {
-        $list = self::getStatusList();
+        $list = Status::getStatusList();
 
         if (!isset($list[$this->getStatus()])) {
             return 'n/a';
@@ -107,19 +102,6 @@ abstract class Result implements ResultInterface
             'status'      => $this->status,
             'status_name' => $this->getStatusName(),
             'created_at'  => $this->createdAt->format('c')
-        );
-    }
-
-    /**
-     * @return array
-     */
-    public static function getStatusList()
-    {
-        return array(
-            self::GOOD    => 'good',
-            self::MINOR   => 'minor',
-            self::MAJOR   => 'major',
-            self::UNKNOWN => 'unknown',
         );
     }
 }

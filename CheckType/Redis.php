@@ -2,7 +2,7 @@
 
 namespace Jiabin\HolterBundle\CheckType;
 
-use Jiabin\HolterBundle\Model\Result;
+use Jiabin\HolterBundle\Model\Status;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -21,9 +21,9 @@ class Redis extends CheckType
         $redis = new \Redis();
         try {
             $redis->connect($this->options->get('host'), $this->options->get('port'), 1);
-            $result = $this->buildResult('Redis is up and running', Result::GOOD);
+            $result = $this->buildResult('Redis is up and running', Status::GOOD);
         } catch (\Exception $e) {
-            $result = $this->buildResult('Can not connect to Redis server', Result::MAJOR);
+            $result = $this->buildResult('Can not connect to Redis server', Status::MAJOR);
         }
 
         return $result;

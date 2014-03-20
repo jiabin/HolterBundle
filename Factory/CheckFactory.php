@@ -144,11 +144,11 @@ class CheckFactory
 
         // Last minor & major
         $resultRepository = $this->om->getRepository($this->resultClass);
-        $minor = $resultRepository->findBy(array('status' => Result::MINOR), array('createdAt' => 'DESC'));
+        $minor = $resultRepository->findBy(array('status' => Status::MINOR), array('createdAt' => 'DESC'));
         if ($minor->hasNext()) {
             $status->setLastMinor($minor->getNext()->getCreatedAt());
         }
-        $major = $resultRepository->findBy(array('status' => Result::MAJOR), array('createdAt' => 'DESC'));
+        $major = $resultRepository->findBy(array('status' => Status::MAJOR), array('createdAt' => 'DESC'));
         if ($major->hasNext()) {
             $status->setLastMajor($major->getNext()->getCreatedAt());
         }
@@ -190,7 +190,7 @@ class CheckFactory
         $result = $builder->field('check')->references($check)->sort('createdAt', 'desc')->getQuery()->getSingleResult();
         
         if (!$result) {
-            $result = $this->createResult('n/a', Result::UNKNOWN, $check);
+            $result = $this->createResult('n/a', Status::UNKNOWN, $check);
         }
 
         return $result;
