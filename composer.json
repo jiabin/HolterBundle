@@ -14,6 +14,7 @@
     "require": {
         "symfony/symfony": ">=2.1,<2.6-dev",
         "doctrine/common": ">=2.1.3",
+        "doctrine/mongodb-odm": "1.0.*@dev",
         "doctrine/mongodb-odm-bundle": "3.0.*@dev",
         "components/html5-boilerplate": "*",
         "components/bootstrap": "*",
