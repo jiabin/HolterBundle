@@ -10,7 +10,7 @@
 
     <div class="row">
         {% if status.results|length > 0 %}
-        <div class="col-md-9">
+        <div class="col-sm-9">
             {% if is_granted('ROLE_ADMIN') %}<form action="{{ path('holter_admin_delete_check') }}" class="checks" method="POST">{% endif %}
                 <ul class="list-group">
                     {% for result in status.results %}
@@ -31,7 +31,7 @@
                 {% endif %}
             {% if is_granted('ROLE_ADMIN') %}</form>{% endif %}
         </div>
-        <div class="col-md-3 text-right">
+        <div class="col-sm-3 text-right">
             {% if app.user %}
             <dl>
                 <dt>Logged in as {{ app.user.username }}</dt>
@@ -41,6 +41,13 @@
             </dl>
             <hr>
             {% endif %}
+            <dl>
+                <dt>Last data received:</dt>
+                <dd>
+                    {% if status.lastUpdated %}{{ status.lastUpdated|localizeddate('medium', 'short') }}{% else %}Never{% endif %}
+                </dd>
+            </dl>
+            <hr>
             <dl>
                 <dt>Last minor outage:</dt>
                 <dd>
