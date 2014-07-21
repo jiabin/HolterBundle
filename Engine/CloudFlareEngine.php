@@ -62,7 +62,7 @@ class CloudFlareEngine extends AbstractEngine
     /**
      * {@inheritdoc}
      */
-    public static function buildOptionsForm(FormBuilderInterface $builder, array $options)
+    public function buildOptionsForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('data-center', 'choice', array(

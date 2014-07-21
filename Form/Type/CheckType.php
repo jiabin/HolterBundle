@@ -48,7 +48,7 @@ class CheckType extends AbstractType
 
                 $id = $options['data']->getEngine();
                 $engine = $this->manager->getEngine($id);
-                $engine::buildOptionsForm($optionsBuilder, $options);
+                $engine->buildOptionsForm($optionsBuilder, $options);
 
                 $builder->add($optionsBuilder);
                 break;

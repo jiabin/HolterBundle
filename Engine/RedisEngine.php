@@ -35,20 +35,20 @@ class RedisEngine extends AbstractEngine
     /**
      * {@inheritdoc}
      */
-    public static function buildOptionsForm(FormBuilderInterface $builder, array $options)
+    public function buildOptionsForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('host', 'text', array(
                 'required' => true,
-                'data' => 'localhost'
+                'empty_data' => 'localhost'
             ))
             ->add('port', 'integer', array(
                 'required' => false,
-                'data' => 6379
+                'empty_data' => 6379
             ))
             ->add('database', 'integer', array(
                 'required' => false,
-                'data' => 0
+                'empty_data' => 0
             ))
         ;
     }

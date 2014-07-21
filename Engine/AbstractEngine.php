@@ -4,6 +4,7 @@ namespace Jiabin\HolterBundle\Engine;
 
 use Jiabin\HolterBundle\Exception\Exception;
 use Jiabin\HolterBundle\Manager\HolterManager;
+use Symfony\Component\Form\FormBuilderInterface;
 
 abstract class AbstractEngine implements EngineInterface
 {
@@ -29,6 +30,11 @@ abstract class AbstractEngine implements EngineInterface
      * {@inheritdoc}
      */
     abstract public function check($options);
+
+    /**
+     * {@inheritdoc}
+     */
+    abstract public function buildOptionsForm(FormBuilderInterface $builder, array $options);
 
     /**
      * Set id

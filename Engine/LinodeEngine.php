@@ -48,7 +48,7 @@ class LinodeEngine extends AbstractEngine
     /**
      * {@inheritdoc}
      */
-    public static function buildOptionsForm(FormBuilderInterface $builder, array $options)
+    public function buildOptionsForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('facility', 'choice', array(
