@@ -33,10 +33,14 @@ class CheckType extends AbstractType
                     'help_block' => 'Group checks together',
                     'required' => false
                 ));
-                $builder->add('interval', 'number', array(
-                    'empty_data' => 30,
+                $builder->add('interval', 'integer', array(
+                    'data' => $options['data']->getInterval() ?: 30,
                     'required' => false,
-                    'help_block' => 'Expressed in seconds'
+                    'help_block' => 'Expressed in seconds',
+                    'attr' => array(
+                        'min' => 1,
+                        'max' => (86400 * 5) // 5 days
+                    )
                 ));
                 $builder->add('engine', 'holter_engine', array(
                     'help_block' => 'Check engine'
