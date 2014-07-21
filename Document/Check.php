@@ -11,7 +11,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 class Check extends BaseCheck
 {
     /**
-     * @ODM\Id(strategy="INCREMENT")
+     * @ODM\Id(strategy="AUTO")
      */
     protected $id;
 
