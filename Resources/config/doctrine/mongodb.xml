@@ -8,6 +8,7 @@
         <parameter key="holter.doctrine_object_manager">doctrine.odm.mongodb.document_manager</parameter>
         <parameter key="holter.result.doctrine.class">Jiabin\HolterBundle\Document\Result</parameter>
         <parameter key="holter.check.doctrine.class">Jiabin\HolterBundle\Document\Check</parameter>
+        <parameter key="holter.config.doctrine.class">Jiabin\HolterBundle\Document\Config</parameter>
     </parameters>
 
 </container>

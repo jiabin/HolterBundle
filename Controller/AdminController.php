@@ -114,5 +114,27 @@ class AdminController extends Controller
         $this->get('session')->getFlashBag()->add('success', "Check \"$name\" deleted successfully!");
 
         return $this->redirect($this->generateUrl('holter_admin'));
+
+    /**
+     * Index config action
+     */
+    public function indexConfigAction(Request $request)
+    {
+        $config = $this->get('holter.manager')->getConfig();
+        $form   = $this->createForm('holter_config', $config);
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid($form)) {
+                $om = $this->get('holter.manager')->getObjectManager();
+                $om->persist($config);
+                $om->flush();
+
+                $this->get('session')->getFlashBag()->add('success', 'Config saved successfully!');
+            }
+        }
+
+        return $this->render('JiabinHolterBundle:Admin:config.html.twig', array(
+            'form' => $form->createView()
+        ));
     }
 }

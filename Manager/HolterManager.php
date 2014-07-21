@@ -31,18 +31,25 @@ class HolterManager
     public $checkClass;
 
     /**
+     * @var string
+     */
+    public $configClass;
+
+    /**
      * Class constructor
      *
      * @param ObjectManager $om
      * @param string        $resultClass
      * @param string        $checkClass
+     * @param string        $configClass
      */
-    public function __construct(ObjectManager $om, $resultClass, $checkClass)
+    public function __construct(ObjectManager $om, $resultClass, $checkClass, $configClass)
     {
         $this->om          = $om;
         $this->engines     = new ArrayCollection();
         $this->resultClass = $resultClass;
         $this->checkClass  = $checkClass;
+        $this->configClass = $configClass;
     }
 
     /**
@@ -105,6 +112,22 @@ class HolterManager
     public function getCheck($id)
     {
         return $this->om->getRepository('JiabinHolterBundle:Check')->find($id);
+    }
+
+    /**
+     * Get config
+     *
+     * @return ConfigInterface
+     */
+    public function getConfig()
+    {
+        $config = $this->om->getRepository('JiabinHolterBundle:Config')->findOneBy(array());
+        if (is_null($config)) {
+            $class  = $this->configClass;
+            $config = new $class();
+        }
+
+        return $config;
     }
 
     /**

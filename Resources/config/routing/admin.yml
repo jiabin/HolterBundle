@@ -15,3 +15,8 @@ holter_admin_delete_check:
     defaults: { _controller:  JiabinHolterBundle:Admin:deleteCheck }
     pattern:  /admin/check/{id}/delete
     methods:  [GET, POST]
+
+holter_admin_config:
+    defaults: { _controller:  JiabinHolterBundle:Admin:indexConfig }
+    pattern:  /admin/config
+    methods:  [GET, POST]

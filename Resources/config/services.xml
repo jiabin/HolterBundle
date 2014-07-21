@@ -6,6 +6,7 @@
 
     <parameters>
         <parameter key="holter.manager.class">Jiabin\HolterBundle\Manager\HolterManager</parameter>
+        <parameter key="holter.form.config.class">Jiabin\HolterBundle\Form\Type\ConfigType</parameter>
         <parameter key="holter.form.engine.class">Jiabin\HolterBundle\Form\Type\EngineType</parameter>
         <parameter key="holter.form.check.class">Jiabin\HolterBundle\Form\Type\CheckType</parameter>
         <parameter key="holter.form.flow.check.class">Jiabin\HolterBundle\Form\Flow\CheckFlow</parameter>
@@ -17,6 +18,12 @@
             <argument /> <!-- Replaced in bundle extension -->
             <argument>%holter.result.doctrine.class%</argument>
             <argument>%holter.check.doctrine.class%</argument>
+            <argument>%holter.config.doctrine.class%</argument>
+        </service>
+        <!-- Config Form Type -->
+        <service id="holter.form.config" class="%holter.form.config.class%">
+            <argument type="service" id="holter.manager" />
+            <tag name="form.type" alias="holter_config" />
         </service>
         <!-- Engine form type -->
         <service id="holter.form.engine" class="%holter.form.engine.class%">
