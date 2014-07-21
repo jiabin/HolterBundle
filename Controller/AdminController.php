@@ -5,6 +5,7 @@ namespace Jiabin\HolterBundle\Controller;
 use Jiabin\HolterBundle\Document\Check;
 use Craue\FormFlowBundle\Form\FormFlowInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -13,11 +14,11 @@ class AdminController extends Controller
     /**
      * Index action
      */
-    public function indexAction()
+    public function indexCheckAction()
     {
         $manager = $this->get('holter.manager');
 
-        return $this->render('JiabinHolterBundle:Admin:index.html.twig', array(
+        return $this->render('JiabinHolterBundle:Admin:check.html.twig', array(
             'checks' => $manager->getChecks()
         ));
     }
@@ -91,7 +92,7 @@ class AdminController extends Controller
 
                 $this->get('session')->getFlashBag()->add('success', 'Check saved successfully!');
 
-                return $this->redirect($this->generateUrl('holter_admin'));
+                return $this->redirect($this->generateUrl('holter_admin_check'));
             }
         }
 
@@ -113,7 +114,8 @@ class AdminController extends Controller
 
         $this->get('session')->getFlashBag()->add('success', "Check \"$name\" deleted successfully!");
 
-        return $this->redirect($this->generateUrl('holter_admin'));
+        return $this->redirect($this->generateUrl('holter_admin_check'));
+    }
 
     /**
      * Index config action

@@ -1,7 +1,7 @@
 # Admin
-holter_admin:
-    defaults: { _controller:  JiabinHolterBundle:Admin:index }
-    pattern:  /admin
+holter_admin_check:
+    defaults: { _controller:  JiabinHolterBundle:Admin:indexCheck }
+    pattern:  /admin/check
 
 holter_admin_new_check:
     defaults: { _controller:  JiabinHolterBundle:Admin:newCheck }
