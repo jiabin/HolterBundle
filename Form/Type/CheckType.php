@@ -34,7 +34,8 @@ class CheckType extends AbstractType
                     'required' => false
                 ));
                 $builder->add('interval', 'number', array(
-                    'data' => 30,
+                    'empty_data' => 30,
+                    'required' => false,
                     'help_block' => 'Expressed in seconds'
                 ));
                 $builder->add('engine', 'holter_engine', array(

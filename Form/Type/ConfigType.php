@@ -26,7 +26,7 @@ class ConfigType extends AbstractType
     {
         $builder
             ->add('title', 'text', array(
-                'data' => 'Holter',
+                'empty_data' => 'Holter',
                 'help_block' => 'Application title'
             ))
             ->add('description', 'textarea', array(
