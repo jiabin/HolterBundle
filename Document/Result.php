@@ -12,11 +12,11 @@ class Result extends BaseResult
 {
     /**
      * @ODM\Id
-     */    
+     */
     protected $id;
 
     /**
-     * @ODM\ReferenceOne()
+     * @ODM\ReferenceOne
      */
     protected $check;
 

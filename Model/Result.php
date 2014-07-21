@@ -16,7 +16,7 @@ abstract class Result implements ResultInterface
 
     /**
      * Get id
-     * 
+     *
      * @return mixed
      */
     public function getId()
@@ -26,7 +26,7 @@ abstract class Result implements ResultInterface
 
     /**
      * Set checkId
-     * 
+     *
      * @param  CheckInterface $check
      * @return self
      */
@@ -39,7 +39,7 @@ abstract class Result implements ResultInterface
 
     /**
      * Get checkId
-     * 
+     *
      * @return CheckInterface
      */
     public function getCheck()
@@ -49,7 +49,7 @@ abstract class Result implements ResultInterface
 
     /**
      * Get message
-     * 
+     *
      * @return string
      */
     public function getMessage()
@@ -59,7 +59,7 @@ abstract class Result implements ResultInterface
 
     /**
      * Get status
-     * 
+     *
      * @return integer
      */
     public function getStatus()
@@ -83,7 +83,7 @@ abstract class Result implements ResultInterface
 
     /**
      * Get createdAt
-     * 
+     *
      * @return string
      */
     public function getCreatedAt()
@@ -97,11 +97,10 @@ abstract class Result implements ResultInterface
     public function toArray()
     {
         return array(
-            'check'       => $this->check->getName(),
+            'name'        => $this->check->getName(),
             'message'     => $this->message,
             'status'      => $this->status,
-            'status_name' => $this->getStatusName(),
-            'created_at'  => $this->createdAt->format('c')
+            'status_name' => $this->getStatusName()
         );
     }
 }

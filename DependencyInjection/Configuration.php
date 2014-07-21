@@ -29,10 +29,6 @@ class Configuration implements ConfigurationInterface
                         ->thenInvalid('Invalid database driver "%s"')
                     ->end()
                 ->end()
-                ->arrayNode('check_types')
-                    ->example(array('Jiabin\HolterBundle\Type\HttpType'))
-                    ->prototype('scalar')->end()
-                ->end()
             ->end()
         ;
 

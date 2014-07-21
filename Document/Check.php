@@ -12,7 +12,7 @@ class Check extends BaseCheck
 {
     /**
      * @ODM\Id(strategy="INCREMENT")
-     */    
+     */
     protected $id;
 
     /**
@@ -23,7 +23,12 @@ class Check extends BaseCheck
     /**
      * @ODM\String
      */
-    protected $type;
+    protected $displayGroup;
+
+    /**
+     * @ODM\String
+     */
+    protected $engine;
 
     /**
      * @ODM\String
@@ -34,6 +39,11 @@ class Check extends BaseCheck
      * @ODM\Hash
      */
     protected $options = array();
+
+    /**
+     * @ODM\Int
+     */
+    protected $interval;
 
     /**
      * @ODM\Date

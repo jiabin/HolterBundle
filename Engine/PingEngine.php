@@ -1,36 +1,39 @@
 <?php
 
-namespace Jiabin\HolterBundle\CheckType;
+namespace Jiabin\HolterBundle\Engine;
 
 use Jiabin\HolterBundle\Model\Status;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class Ping extends CheckType
+class PingEngine extends AbstractEngine
 {
     /**
      * {@inheritdoc}
      */
-    static $name = 'ping';
+    public function getName()
+    {
+        return 'ping';
+    }
 
     /**
      * {@inheritdoc}
      */
-    public function check()
+    public function check($options)
     {
-        $command = sprintf('ping -c 2 %s', $this->options->get('host'));
+        $command = sprintf('ping -c 2 %s', $options['host']);
         $process = new Process($command);
         $process->run();
 
         if (!$process->isSuccessful()) {
-            return $this->buildResult('Connection failed', Status::MAJOR);
+            return $this->buildResult('Connection failed.', Status::MAJOR);
         }
 
         $output = $process->getOutput();
         preg_match_all('/time=(.*?) .*/i', $output, $matches);
 
         if (empty($matches[1])) {
-            return $this->buildResult('Connection failed', Status::MAJOR);
+            return $this->buildResult('Connection failed.', Status::MAJOR);
         }
 
         $avg = 0;
@@ -38,10 +41,10 @@ class Ping extends CheckType
             $avg = ($avg + $match) / 2;
         }
 
-        if ($this->options->get('timeout') && $avg > $this->options->get('timeout')) {
-            return $this->buildResult('Connection to host is taking more than usual', Status::MINOR);
+        if ($options['timeout'] && $avg > $options['timeout']) {
+            return $this->buildResult('Connection to host is taking more than usual.', Status::MINOR);
         } else {
-            return $this->buildResult('Host is reachable', Status::GOOD);
+            return $this->buildResult('Lock and load.', Status::GOOD);
         }
     }
 

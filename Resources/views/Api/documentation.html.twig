@@ -1,23 +1,36 @@
 {% extends "JiabinHolterBundle:Base:layout.html.twig" %}
 
+{% block subtitle %}api:doc{% endblock %}
+
 {% block page_header %}
     {{ parent() }} <small>api:documentation</small>
 {% endblock %}
 
 {% block body %}
+    <div class="page-header">
+        <h5>API Documentation</h5>
+    </div>
+
     <dl>
         <dt><a href="{{ url('holter_api_status') }}.json" target="_blank">{{ path('holter_api_status') }}.json</a></dt>
         <dd>Performs all health checks and returns the results.</dd>
         <pre>{
     "status": 0,
     "status_name": "good",
-    "results": {
+    "checks": {
         "1": {
-            "check_name": "http",
+            "name": "http",
+            "display_group": "Networking",
             "message": "Host is up and running",
             "status": 0,
-            "status_name": "good",
-            "created_at": "2014-01-05T13:27:48+01:00"
+            "status_name": "good"
+        },
+        "2": {
+            "name": "connectivity",
+            "display_group": null,
+            "message": "Connection to host is taking more than usual",
+            "status": 1,
+            "status_name": "minor"
         }
     },
     "last_updated": "2014-01-05T13:27:48+01:00",

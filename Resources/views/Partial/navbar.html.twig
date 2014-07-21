@@ -1,0 +1,38 @@
+<nav class="navbar navbar-default navbar-fixed-tops" role="navigation">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ path('holter') }}">
+                <img src="/bundles/jiabinholter/img/logo-inverse.png" alt="Pulse designed by Nico Tzogalis from the Noun Project">
+                {{ title|default('Holter') }}
+                {% if subtitle|default(false) %}<small>{{ subtitle|raw }}</small>{% endif %}
+            </a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="navbar">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="{% if '/api' in app.request.requestUri %}active{% endif %}">
+                    <a href="{{ path('holter_api_doc') }}">API</a>
+                </li>
+                {% if app.user %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="{% if '/admin' in app.request.requestUri %}active{% endif %}">
+                            <a href="{{ path('holter_admin') }}">Admin</a>
+                        </li>
+                    {% endif %}
+                    <li><a href="{{ path('_security_logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ path('_security_login') }}">Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+</nav>

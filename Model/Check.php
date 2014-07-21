@@ -11,7 +11,7 @@ class Check implements CheckInterface
 
     /**
      * Generate token
-     * 
+     *
      * @return string
      */
     private function generateToken()
@@ -28,7 +28,7 @@ class Check implements CheckInterface
      */
     public function getId()
     {
-        return $this->id;   
+        return $this->id;
     }
 
     /**
@@ -36,7 +36,7 @@ class Check implements CheckInterface
      */
     public function setName($name)
     {
-        $this->name = $name;   
+        $this->name = $name;
 
         return $this;
     }
@@ -46,15 +46,15 @@ class Check implements CheckInterface
      */
     public function getName()
     {
-        return $this->name;   
+        return $this->name;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setType($type)
+    public function setDisplayGroup($displayGroup)
     {
-        $this->type = $type;   
+        $this->displayGroup = $displayGroup;
 
         return $this;
     }
@@ -62,9 +62,27 @@ class Check implements CheckInterface
     /**
      * {@inheritdoc}
      */
-    public function getType()
+    public function getDisplayGroup()
     {
-        return $this->type;   
+        return $this->displayGroup;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setEngine($engine)
+    {
+        $this->engine = $engine;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEngine()
+    {
+        return $this->engine;
     }
 
     /**
@@ -72,7 +90,7 @@ class Check implements CheckInterface
      */
     public function getToken()
     {
-        return $this->token;   
+        return $this->token;
     }
 
     /**
@@ -80,7 +98,7 @@ class Check implements CheckInterface
      */
     public function setOptions($options)
     {
-        $this->options = $options;   
+        $this->options = $options;
 
         return $this;
     }
@@ -90,7 +108,25 @@ class Check implements CheckInterface
      */
     public function getOptions()
     {
-        return $this->options;   
+        return $this->options;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setInterval($interval)
+    {
+        $this->interval = $interval;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getInterval()
+    {
+        return $this->interval;
     }
 
     /**
@@ -98,7 +134,7 @@ class Check implements CheckInterface
      */
     public function setCreatedAt(\DateTime $createdAt)
     {
-        $this->createdAt = $createdAt;   
+        $this->createdAt = $createdAt;
 
         return $this;
     }
@@ -108,6 +144,6 @@ class Check implements CheckInterface
      */
     public function getCreatedAt()
     {
-        return $this->createdAt;   
+        return $this->createdAt;
     }
 }

@@ -1,14 +1,16 @@
 {% extends "JiabinHolterBundle:Base:layout.html.twig" %}
 
-{% block page_header %}
-    {{ parent() }} <small>admin:check</small>
+{% block subtitle %}admin:check{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
 {% endblock %}
 
 {% block body %}
     <div class="row">
         <div class="col-md-4">
             {% set steps = [{ heading: 'Step 1', text: 'Basic information',
-                }, { heading: 'Step 2', text: 'Type options',
+                }, { heading: 'Step 2', text: 'Engine options',
                 }, { heading: 'Step 3', text: 'Review & confirmation'}] %}
             <ul class="list-group">
                 {% for index, step in steps %}
@@ -21,50 +23,9 @@
         </div>
         <div class="col-md-8">
             <form action="{{ path('holter_admin_new_check') }}" role="form" method="post">
-                {% if flow.getCurrentStepNumber() == 1 %}
-                    <div class="form-group">
-                        {{ form_label(form.name) }}
-                        {{ form_widget(form.name, { 'attr': {'class': 'form-control'} }) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.type) }}
-                        {{ form_widget(form.type, { 'attr': {'class': 'form-control'} }) }}
-                    </div>
-                {% elseif flow.getCurrentStepNumber() == 2 %}
-                    {% for key, option in form.options %}
-                        <div class="form-group">
-                            {{ form_label(form.options[key]) }}
-                            {{ form_widget(form.options[key], { 'attr': {'class': 'form-control'} }) }}
-                        </div>
-                    {% endfor %}
-                {% elseif flow.getCurrentStepNumber() == 3 %}
-                    {% set check = flow.formData %}
-                    <table class="table table-curved">
-                        <tr>
-                            <th scope="row">Name</th>
-                            <td>{{ check.name }}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Type</th>
-                            <td>{{ check.type }}</td>
-                        </tr>
-                        {% for key, option in check.options %}
-                        <tr>
-                            <th scope="row">{{ key|title }}</th>
-                            <td>
-                                {% if option is null %}
-                                    <span class="glyphicon glyphicon-remove"></span>
-                                {% else %}
-                                    {{ option }}
-                                {% endif %}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </table>
-                {% endif %}
-                {{ form_rest(form) }}
+                {{ form_widget(form) }}
                 {% include 'JiabinHolterBundle:Flow:buttons.html.twig' %}
-            </form>  
+            </form>
         </div>
     </div>
 {% endblock %}

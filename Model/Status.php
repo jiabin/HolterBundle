@@ -31,7 +31,7 @@ class Status implements StatusInterface
 
     /**
      * Get status
-     * 
+     *
      * @return integer
      */
     public function getStatus()
@@ -68,7 +68,7 @@ class Status implements StatusInterface
 
     /**
      * Add result
-     * 
+     *
      * @param Result $result
      */
     public function addResult(Result $result)
@@ -83,7 +83,7 @@ class Status implements StatusInterface
 
     /**
      * Get results
-     * 
+     *
      * @return array
      */
     public function getResults()
@@ -102,7 +102,7 @@ class Status implements StatusInterface
         $this->lastMinor = $lastMinor;
 
         return $this;
-    }  
+    }
 
     /**
      * Get lastMinor
@@ -125,7 +125,7 @@ class Status implements StatusInterface
         $this->lastMajor = $lastMajor;
 
         return $this;
-    }  
+    }
 
     /**
      * Get lastMajor
@@ -135,11 +135,11 @@ class Status implements StatusInterface
     public function getLastMajor()
     {
         return $this->lastMajor;
-    }  
+    }
 
     /**
      * Get lastUpdated
-     * 
+     *
      * @return DateTime
      */
     public function getLastUpdated()
@@ -155,26 +155,31 @@ class Status implements StatusInterface
         $array = array(
             'status'       => $this->getStatus(),
             'status_name'  => $this->getStatusName(),
-            'results'      => array()
+            'checks'       => array()
         );
 
         // Last updated
+        $array['last_updated'] = null;
         if ($lastUpdated = $this->getLastUpdated()) {
             $array['last_updated'] = $lastUpdated->format('c');
         }
 
         // Last minor & major
+        $array['last_minor'] = null;
         if ($lastMinor = $this->getLastMinor()) {
             $array['last_minor'] = $lastMinor->format('c');
         }
 
+        $array['last_major'] = null;
         if ($lastMajor = $this->getLastMajor()) {
             $array['last_major'] = $lastMajor->format('c');
         }
 
         foreach ($this->getResults() as $result) {
             $check = $result->getCheck();
-            $array['results'][$check->getId()] = $result->toArray();
+            $array['checks'][$check->getId()] = array_merge($result->toArray(), array(
+                'display_group' => $check->getDisplayGroup()
+            ));
         }
 
         return $array;

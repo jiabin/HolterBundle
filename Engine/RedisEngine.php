@@ -1,29 +1,31 @@
 <?php
 
-namespace Jiabin\HolterBundle\CheckType;
+namespace Jiabin\HolterBundle\Engine;
 
 use Jiabin\HolterBundle\Model\Status;
-use Symfony\Component\Process\Process;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class Redis extends CheckType
+class RedisEngine extends AbstractEngine
 {
     /**
      * {@inheritdoc}
      */
-    static $name = 'redis';
+    public function getName()
+    {
+        return 'redis';
+    }
 
     /**
      * {@inheritdoc}
      */
-    public function check()
+    public function check($options)
     {
         $redis = new \Redis();
         try {
-            $redis->connect($this->options->get('host'), $this->options->get('port'), 1);
-            $result = $this->buildResult('Redis is up and running', Status::GOOD);
+            $redis->connect($options['host'], $options['port'], 1);
+            $result = $this->buildResult('Redis is up and running.', Status::GOOD);
         } catch (\Exception $e) {
-            $result = $this->buildResult('Can not connect to Redis server', Status::MAJOR);
+            $result = $this->buildResult('Can not connect to Redis server.', Status::MAJOR);
         }
 
         return $result;
@@ -36,7 +38,8 @@ class Redis extends CheckType
     {
         $builder
             ->add('host', 'text', array(
-                'required' => true
+                'required' => true,
+                'data' => 'localhost'
             ))
             ->add('port', 'integer', array(
                 'required' => false,

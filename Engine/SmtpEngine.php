@@ -1,21 +1,24 @@
 <?php
 
-namespace Jiabin\HolterBundle\CheckType;
+namespace Jiabin\HolterBundle\Engine;
 
 use Jiabin\HolterBundle\Model\Status;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class Smtp extends CheckType
+class SmtpEngine extends AbstractEngine
 {
     /**
      * {@inheritdoc}
      */
-    static $name = 'smtp';
+    public function getName()
+    {
+        return 'smtp';
+    }
 
     /**
      * {@inheritdoc}
      */
-    public function check()
+    public function check($options)
     {
         try {
             $mailer = $this->createMailer();
@@ -42,14 +45,14 @@ class Smtp extends CheckType
     protected function createMailer()
     {
         // Create the Transport
-        $transport = \Swift_SmtpTransport::newInstance($this->options->get('host'), $this->options->get('port'));
-        if ( ($username = $this->options->get('username')) && ($password = $this->options->get('password')) ) {
+        $transport = \Swift_SmtpTransport::newInstance($options['host'], $options['port']);
+        if ( ($username = $options['username']) && ($password = $options['password']) ) {
             $transport
                 ->setUsername($username)
                 ->setPassword($password)
             ;
         }
-        
+
         return \Swift_Mailer::newInstance($transport);
     }
 

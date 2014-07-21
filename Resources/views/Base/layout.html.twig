@@ -1,8 +1,10 @@
+{% import "JiabinHolterBundle:Base:macros.html.twig" as macros %}
+{% set subtitle = block('subtitle')|raw %}
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" ng-app="HolterApp"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" ng-app="HolterApp"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" ng-app="HolterApp"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" ng-app="HolterApp"> <!--<![endif]-->
     <head>
         {% block head %}
         <meta charset="utf-8">
@@ -14,13 +16,14 @@
 
         <link rel="stylesheet" href="/components/normalize-css/normalize.css">
         <link rel="stylesheet" href="/components/html5-boilerplate/css/main.css">
-        <link rel="stylesheet" href="/components/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/flatly/bootstrap.min.css">
         <link rel="stylesheet" href="/bundles/jiabinholter/css/main.css">
         <script src="/components/modernizr/modernizr.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>
         {% block stylesheets %}{% endblock %}
         {% endblock %}
     </head>
-    <body>
+    <body ng-controller="HolterCtrl">
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
@@ -28,68 +31,28 @@
         <div id="wrap">
 
             <div class="container">
-                <div class="page-header">
+
+                {% include "JiabinHolterBundle:Partial:navbar.html.twig" %}
+
+                {# <div class="page-header">
                     <h2>
-                        {% block page_header %}
                         <a href="{{ path('holter') }}">
                             <img src="/bundles/jiabinholter/img/logo.png" alt="Pulse designed by Nico Tzogalis from the Noun Project">
                             {{ title|default('Holter') }}
                         </a>
-                        {% endblock %}</h2>
-                </div>
+                        <small>{{ subtitle }}</small>
+                    </h2>
+                </div> #}
 
-                {% block flashes %}
-                    {% for flashMessage in app.session.flashbag.get('success') %}
-                        <div class="alert alert-success">
-                            {{ flashMessage }}
-                        </div>
-                    {% endfor %}
-                    {% for flashMessage in app.session.flashbag.get('error') %}
-                        <div class="alert alert-error">
-                            {{ flashMessage }}
-                        </div>
-                    {% endfor %}
-                    {% for flashMessage in app.session.flashbag.get('notice') %}
-                        <div class="alert alert-warning">
-                            {{ flashMessage }}
-                        </div>
-                    {% endfor %}
-                    {% for flashMessage in app.session.flashbag.get('info') %}
-                        <div class="alert alert-info">
-                            {{ flashMessage }}
-                        </div>
-                    {% endfor %}
-                {% endblock flashes %}
+                {{ macros.flashes() }}
 
                 {% block body %}{% endblock %}
             </div>
 
         </div>
 
-        <div id="footer">
-            <div class="container">
-                <p class="text-muted pull-left">
-                    <a href="{{ path('holter') }}">Home</a>
-                    &nbsp;|&nbsp;
-                    <a href="{{ path('holter_api_doc') }}">Api</a>
-                    &nbsp;|&nbsp;
-                    {% if app.user %}
-                        <a href="{{ path('_security_logout') }}">Logout</a>
-                    {% else %}
-                        <a href="{{ path('_security_login') }}">Login</a>
-                    {% endif %}
-                    &nbsp;|&nbsp;
-                    <a href="https://github.com/jiabin/holter" target="_blank">Source</a>
-                </p>
-                <p class="text-muted pull-right">Powered by <a href="https://github.com/jiabin/holter" target="_blank">Holter</a></p>
-            </div>
-        </div>
+        {% include "JiabinHolterBundle:Partial:footer.html.twig" %}
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
-        <script src="/components/bootstrap/js/bootstrap.min.js"></script>
-        <script src="/bundles/jiabinholter/js/plugins.js"></script>
-        {% if status is defined %}<script>changeFavicon('{{ status.statusName }}');</script>{% endif %}
         {% block javascripts %}{% endblock %}
     </body>
 </html>

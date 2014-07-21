@@ -26,60 +26,28 @@ class JiabinHolterExtension extends Extension
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
+        $loader->load('engines.xml');
         $loader->load('doctrine/' . $config['db_driver'] . '.xml');
 
-        $types = array_merge($config['check_types'], $this->getDefaultCheckTypes());
-        
-        $this->addCheckTypes($container, $types);
         $this->setDoctrine($container);
     }
 
     /**
-     * Get default check types
-     * 
-     * @return array
-     */
-    private function getDefaultCheckTypes()
-    {
-        return array(
-            'Jiabin\HolterBundle\CheckType\GitHub',
-            'Jiabin\HolterBundle\CheckType\Http',
-            'Jiabin\HolterBundle\CheckType\Linode',
-            'Jiabin\HolterBundle\CheckType\Mongo',
-            'Jiabin\HolterBundle\CheckType\Ping',
-            'Jiabin\HolterBundle\CheckType\Redis',
-            'Jiabin\HolterBundle\CheckType\Smtp'
-        );
-    }
-
-    /**
-     * Add checks
-     * 
-     * @param ContainerBuilder $container
-     * @param array            $checkTypes
-     */
-    private function addCheckTypes(ContainerBuilder $container, $checkTypes)
-    {
-        $checkFactory = $container->getDefinition('holter.check_factory');
-        foreach ($checkTypes as $class) {
-            $name = $class::$name;
-            $checkFactory->addMethodCall('addCheckType', array($name, $class));
-        }
-    }
-
-    /**
      * Set doctrine
-     * 
+     *
      * @param ContainerBuilder $container
      */
     private function setDoctrine(ContainerBuilder $container)
     {
         $om = $container->getParameter('holter.doctrine_object_manager');
 
+        $holterManager = $container->getDefinition('holter.manager');
+        $holterManager->replaceArgument(0, new Reference($om));
+
         $eventSubscriber = $container->getDefinition('holter.event_subscriber');
         $eventSubscriber->replaceArgument(0, new Reference($om));
 
-        $checkFactory = $container->getDefinition('holter.check_factory');
-        $checkFactory->replaceArgument(0, new Reference($om));
+        // $checkFactory = $container->getDefinition('holter.check_factory');
+        // $checkFactory->replaceArgument(0, new Reference($om));
     }
 }

@@ -7,20 +7,24 @@
     #}
     <button class="btn btn-primary" type="submit" class="craue_formflow_button_last">
         {%- if flow.getCurrentStepNumber() < flow.getLastStepNumber() -%}
-            Next
+            <span class="glyphicon glyphicon-chevron-right"></span>
+            &nbsp;Next
         {%- else -%}
-            Finish
+            <span class="glyphicon glyphicon-ok"></span>
+            &nbsp;Finish
         {%- endif -%}
     </button>
 
     {% if renderBackButton %}
         {# see http://www.html5rocks.com/en/tutorials/forms/html5forms/ #}
         <button class="btn btn-warning" type="submit" name="{{ flow.getFormTransitionKey() }}" value="back" formnovalidate="formnovalidate">
-            Back
+            <span class="glyphicon glyphicon-chevron-left"></span>
+            &nbsp;Back
         </button>
     {% endif %}
 
     <button class="btn btn-default" type="submit" class="craue_formflow_button_first" name="{{ flow.getFormTransitionKey() }}" value="reset" formnovalidate="formnovalidate">
-        Reset
+        <span class="glyphicon glyphicon-fast-backward"></span>
+        &nbsp;Reset
     </button>
 </div>

@@ -1,5 +1,32 @@
+{% macro flashes() %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="alert alert-success">
+            <span class="glyphicon glyphicon-ok-circle"></span>
+            &nbsp;{{ flashMessage }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('error') %}
+        <div class="alert alert-danger">
+            <span class="glyphicon glyphicon-remove-circle"></span>
+            &nbsp;{{ flashMessage }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('notice') %}
+        <div class="alert alert-warning">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            &nbsp;{{ flashMessage }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('info') %}
+        <div class="alert alert-info">
+            <span class="glyphicon glyphicon-info-sign"></span>
+            &nbsp;{{ flashMessage }}
+        </div>
+    {% endfor %}
+{% endmacro %}
+
 {% macro alert(status) %}
-    {% set texts = { 
+    {% set texts = {
         'good': [
             "Ray, next time someone asks you if you're a god, you say yes!",
             "Smooth and easy!",
@@ -14,7 +41,7 @@
             "I love the smell of napalm in the morning!"
         ]
     } %}
-    
+
     {% if texts[status] is defined and status != 'unknown' %}
         <div class="alert alert-{{ status }}">
             <p>{{ random(texts[status]) }}</p>

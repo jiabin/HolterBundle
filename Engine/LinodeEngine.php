@@ -1,28 +1,31 @@
 <?php
 
-namespace Jiabin\HolterBundle\CheckType;
+namespace Jiabin\HolterBundle\Engine;
 
 use Jiabin\HolterBundle\Model\Status;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class Linode extends CheckType
+class LinodeEngine extends AbstractEngine
 {
     /**
      * {@inheritdoc}
      */
-    static $name = 'linode';
+    public function getName()
+    {
+        return 'linode';
+    }
 
     /**
      * {@inheritdoc}
      */
-    public function check()
+    public function check($options)
     {
         $feed = new \SimplePie();
         $feed->set_feed_url('http://status.linode.com/blog/atom.xml');
         $feed->enable_cache(false);
         $feed->init();
 
-        $facility = $this->options->get('facility');
+        $facility = $options['facility'];
         list($open, $closed) = array(0, 0);
         foreach ($feed->get_items() as $item) {
             $title = $item->get_title();

@@ -12,14 +12,10 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $cf = $this->get('holter.check_factory');
-
         $response = new Response();
         $response->setPublic();
         $response->setSharedMaxAge(30);
 
-        return $this->render('JiabinHolterBundle:Default:index.html.twig', array(
-            'status' => $cf->createStatus()
-        ), $response);
+        return $this->render('JiabinHolterBundle:Default:index.html.twig', array(), $response);
     }
 }

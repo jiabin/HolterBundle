@@ -32,21 +32,21 @@ class CheckCommand extends ContainerAwareCommand
     {
         $container = $this->getContainer();
         $dispatcher = $container->get('event_dispatcher'); 
-        $cf = $container->get('holter.check_factory');
+        $manager = $container->get('holter.manager');
 
         if ($id = $input->getArgument('check')) {
-            $check = $cf->getCheck($id);
+            $check = $manager->getCheck($id);
             if (!$check) {
                 return $output->writeln('<error>Check '.$id.' not found!</error>');
             }
             $checks = array($check);
         } else {
-            $checks = $cf->getChecks();
+            $checks = $manager->getChecks();
         }
 
         foreach ($checks as $check) {
             $output->write(sprintf('Checking %s ', $check->getName()));
-            $result = $cf->check($check);
+            $result = $manager->check($check);
             $output->writeln($this->resultString($result));
 
             $event = new CheckEvent($result);

@@ -2,7 +2,7 @@
 
 namespace Jiabin\HolterBundle\Form\Type;
 
-use Jiabin\HolterBundle\Factory\CheckFactory;
+use Jiabin\HolterBundle\Manager\HolterManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -10,30 +10,35 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class CheckType extends AbstractType
 {
     /**
-     * @var CheckFactory
+     * @var HolterManager
      */
-    protected $cf;
+    protected $manager;
 
     /**
      * Class constructor
      */
-    public function __construct(CheckFactory $cf)
+    public function __construct(HolterManager $manager)
     {
-        $this->cf = $cf;
+        $this->manager = $manager;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         switch ($options['flow_step']) {
             case 1:
-                $types = array();
-                foreach ($this->cf->getCheckTypes() as $name => $class) {
-                    $types[$name] = ucfirst($name);
-                }
-
-                $builder->add('name', 'text');
-                $builder->add('type', 'choice', array(
-                    'choices' => $types
+                $builder->add('name', 'text', array(
+                    'help_block' => 'Human visible name'
+                ));
+                $builder->add('displayGroup', 'text', array(
+                    'help_block' => 'Group checks together',
+                    'required' => false
+                ));
+                $builder->add('interval', 'number', array(
+                    'data' => 30,
+                    'help_block' => 'Expressed in seconds'
+                ));
+                $builder->add('engine', 'holter_engine', array(
+                    'help_block' => 'Check engine'
                 ));
                 break;
             case 2:
@@ -41,13 +46,20 @@ class CheckType extends AbstractType
                     'compound' => true
                 ));
 
-                $type = $options['data']->getType();
-                $className = $this->cf->getCheckTypeClass($type);
-                $className::buildOptionsForm($optionsBuilder, $options);
+                $id = $options['data']->getEngine();
+                $engine = $this->manager->getEngine($id);
+                $engine::buildOptionsForm($optionsBuilder, $options);
 
                 $builder->add($optionsBuilder);
                 break;
         }
+    }
+
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'label' => 'Check form'
+        ));
     }
 
     public function getName()

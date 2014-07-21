@@ -1,29 +1,32 @@
 <?php
 
-namespace Jiabin\HolterBundle\CheckType;
+namespace Jiabin\HolterBundle\Engine;
 
 use Jiabin\HolterBundle\Model\Status;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class Mongo extends CheckType
+class MongoEngine extends AbstractEngine
 {
     /**
      * {@inheritdoc}
      */
-    static $name = 'mongo';
+    public function getName()
+    {
+        return 'mongo';
+    }
 
     /**
      * {@inheritdoc}
      */
-    public function check()
+    public function check($options)
     {
-        $auth = array('timeout' => $this->options->get('timeout'));
-        if ($this->options->get('username')) {
-            $auth = array_merge($auth, array("username" => $this->options->get('username'), "password" => $this->options->get('password')));
+        $auth = array('connectTimeoutMS' => $options['timeout']);
+        if ($options['username']) {
+            $auth = array_merge($auth, array("username" => $options['username'], "password" => $options['password']));
         }
 
         try {
-            $m = new \MongoClient("mongodb://".$this->options->get('host'), $auth);
+            $m = new \MongoClient("mongodb://".$options['host'], $auth);
             $result = $this->buildResult('Mongo is up and running', Status::GOOD);
         } catch (\Exception $e) {
             if (strpos($e->getMessage(), 'Operation timed out') !== false) {
@@ -43,7 +46,8 @@ class Mongo extends CheckType
     {
         $builder
             ->add('host', 'text', array(
-                'required' => true
+                'required' => true,
+                'data' => 'localhost:27017'
             ))
             ->add('username', 'text', array(
                 'required' => false,

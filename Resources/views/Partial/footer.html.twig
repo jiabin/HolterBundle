@@ -1,0 +1,30 @@
+<div id="footer">
+    <div class="container">
+        <p class="text-muted pull-left">
+            <a href="{{ path('holter') }}">Home</a>
+            {% if app.user and is_granted('ROLE_ADMIN') %}
+            &nbsp;|&nbsp;
+            <a href="{{ path('holter_admin') }}">Admin</a>
+            {% endif %}
+            &nbsp;|&nbsp;
+            <a href="{{ path('holter_api_doc') }}">Api</a>
+            &nbsp;|&nbsp;
+            {% if app.user %}
+                <a href="{{ path('_security_logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ path('_security_login') }}">Login</a>
+            {% endif %}
+            &nbsp;|&nbsp;
+            <a href="https://github.com/jiabin/holter" target="_blank">Source</a>
+        </p>
+        <p class="text-muted pull-right">Powered by <a href="https://github.com/jiabin/holter" target="_blank">Holter</a></p>
+    </div>
+</div>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+<script src="/components/bootstrap/js/bootstrap.min.js"></script>
+<script src="/bundles/jiabinholter/js/plugins.js"></script>
+<script src="/bundles/jiabinholter/js/app.js"></script>
+<script src="/bundles/mopabootstrap/js/mopabootstrap-collection.js"></script>

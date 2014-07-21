@@ -5,6 +5,9 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
+        <parameter key="holter.manager.class">Jiabin\HolterBundle\Manager\HolterManager</parameter>
+        <parameter key="holter.form.engine.class">Jiabin\HolterBundle\Form\Type\EngineType</parameter>
+
         <parameter key="holter.event_subscriber.class">Jiabin\HolterBundle\Event\EventSubscriber</parameter>
         <parameter key="holter.check_factory.class">Jiabin\HolterBundle\Factory\CheckFactory</parameter>
         <parameter key="holter.form.check.class">Jiabin\HolterBundle\Form\Type\CheckType</parameter>
@@ -17,20 +20,27 @@
             <argument /> <!-- Replaced in bundle extension -->
             <tag name="kernel.event_subscriber" />
         </service>
-        <!-- Check Factory -->
-        <service id="holter.check_factory" class="%holter.check_factory.class%">
+        <!-- Holter manager -->
+        <service id="holter.manager" class="%holter.manager.class%">
             <argument /> <!-- Replaced in bundle extension -->
             <argument>%holter.result.doctrine.class%</argument>
             <argument>%holter.check.doctrine.class%</argument>
         </service>
-
+        <!-- Engine form type -->
+        <service id="holter.form.engine" class="%holter.form.engine.class%">
+            <argument type="service" id="holter.manager" />
+            <tag name="form.type" alias="holter_engine" />
+        </service>
         <!-- Check Form Type -->
         <service id="holter.form.check" class="%holter.form.check.class%">
-            <argument type="service" id="holter.check_factory" />
+            <argument type="service" id="holter.manager" />
             <tag name="form.type" alias="check" />
         </service>
         <!-- Check Form Flow -->
         <service id="holter.form.flow.check" class="%holter.form.flow.check.class%" parent="craue.form.flow" scope="request">
+            <call method="setManager">
+                <argument type="service" id="holter.manager" />
+            </call>
             <call method="setFormType">
                 <argument type="service" id="holter.form.check" />
             </call>

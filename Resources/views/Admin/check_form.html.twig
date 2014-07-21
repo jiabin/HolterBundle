@@ -1,0 +1,59 @@
+{% extends "JiabinHolterBundle:Base:layout.html.twig" %}
+
+{% block subtitle %}admin:check{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-3">
+            {% set steps = [{ heading: 'Step 1', text: 'Basic information',
+                }, { heading: 'Step 2', text: 'Engine options',
+                }, { heading: 'Step 3', text: 'Review & confirmation'}] %}
+            <div class="list-group">
+                {% for index, step in steps %}
+                <a href="#" class="list-group-item {% if flow.getCurrentStepNumber() == index + 1 %}active{% endif %}">
+                    <h5 class="list-group-item-heading">{{ step.heading }}</h5>
+                    <small class="list-group-item-text">{{ step.text }}</small>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-md-9">
+            <form action="{{ path('holter_admin_new_check') }}" role="form" method="post">
+                {{ form_widget(form) }}
+                {% if flow.getCurrentStepNumber() == 1 %}
+                {% elseif flow.getCurrentStepNumber() == 2 %}
+                {% elseif flow.getCurrentStepNumber() == 3 %}
+                    {% set check = flow.formData %}
+                    <table class="table table-curved table-bordered">
+                        <tr>
+                            <th scope="row">Name</th>
+                            <td>{{ check.name }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Engine</th>
+                            <td>{{ check.engine }}</td>
+                        </tr>
+                        {% for key, option in check.options %}
+                        <tr>
+                            <th scope="row">{{ key|title }}</th>
+                            <td>
+                                {% if option is null %}
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                {% else %}
+                                    {{ option }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                {% endif %}
+
+                {% include 'JiabinHolterBundle:Flow:buttons.html.twig' %}
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="holter.engine.github.class">Jiabin\HolterBundle\Engine\GitHubEngine</parameter>
+        <parameter key="holter.engine.http.class">Jiabin\HolterBundle\Engine\HttpEngine</parameter>
+        <parameter key="holter.engine.linode.class">Jiabin\HolterBundle\Engine\LinodeEngine</parameter>
+        <parameter key="holter.engine.mongo.class">Jiabin\HolterBundle\Engine\MongoEngine</parameter>
+        <parameter key="holter.engine.ping.class">Jiabin\HolterBundle\Engine\PingEngine</parameter>
+        <parameter key="holter.engine.redis.class">Jiabin\HolterBundle\Engine\RedisEngine</parameter>
+        <parameter key="holter.engine.smtp.class">Jiabin\HolterBundle\Engine\SmtpEngine</parameter>
+    </parameters>
+
+    <services>
+        <!-- GitHub engine -->
+        <service id="holter.engine.github" class="%holter.engine.github.class%">
+            <tag name="holter.engine" />
+        </service>
+        <!-- Http engine -->
+        <service id="holter.engine.http" class="%holter.engine.http.class%">
+            <tag name="holter.engine" />
+        </service>
+        <!-- Linode engine -->
+        <service id="holter.engine.linode" class="%holter.engine.linode.class%">
+            <tag name="holter.engine" />
+        </service>
+        <!-- Mongo engine -->
+        <service id="holter.engine.mongo" class="%holter.engine.mongo.class%">
+            <tag name="holter.engine" />
+        </service>
+        <!-- Ping engine -->
+        <service id="holter.engine.ping" class="%holter.engine.ping.class%">
+            <tag name="holter.engine" />
+        </service>
+        <!-- Redis engine -->
+        <service id="holter.engine.redis" class="%holter.engine.redis.class%">
+            <tag name="holter.engine" />
+        </service>
+        <!-- Smtp engine -->
+        <service id="holter.engine.smtp" class="%holter.engine.smtp.class%">
+            <tag name="holter.engine" />
+        </service>
+    </services>
+</container>

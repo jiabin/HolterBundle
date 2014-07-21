@@ -1,12 +1,97 @@
 {% extends "JiabinHolterBundle:Base:layout.html.twig" %}
 {% import "JiabinHolterBundle:Base:macros.html.twig" as macros %}
 
-{% block page_header %}
-    {{ parent() }} <small>status:<span class="text-{{ status.statusName }}">{{ status.statusName }}</span></small>
+{% block subtitle %}
+    {% verbatim %}
+        status:<span class="text-{{status.status_name}}">{{status.status_name}}</span>
+    {% endverbatim %}
 {% endblock %}
 
 {% block body %}
-    {{ macros.alert(status.statusName) }}
+    {% verbatim %}
+        <div class="alert alert-{{status.status_name}}" ng-if="status.status_name == 'good'">
+            <p>All systems operational!</p>
+        </div>
+        <div class="alert alert-{{status.status_name}}" ng-if="status.status_name == 'minor'">
+            <p>I've got a feeling we're not in Kansas anymore!</p>
+        </div>
+        <div class="alert alert-{{status.status_name}}" ng-if="status.status_name == 'major'">
+            <p>Oh snap! Major system outage!</p>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="page-header">
+                    <h5>What is this site?</h5>
+                </div>
+                <p>
+                    We continuously monitor the status of our infrastructure and all its related services. If there are any interruptions in service, a note will be posted here. If you are experiencing problems and do not see a notice posted, please email <a href="mailto:support@jiabin.net">support@jiabin.net</a>.
+                </p>
+            </div>
+        </div>
+
+        <div class="row" ng-if="status.checks">
+            <div class="col-md-12">
+                <div class="page-header no-border">
+                    <h5>Service status</h5>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="check in status.checks">
+                        <span class="badge badge-{{check.status_name}}" ng-switch="check.status_name">
+                            <span class="glyphicon glyphicon-ok-sign" ng-switch-when="good"></span>
+                            <span class="glyphicon glyphicon-exclamation-sign" ng-switch-when="minor"></span>
+                            <span class="glyphicon glyphicon-remove-sign" ng-switch-when="major"></span>
+                            <span class="glyphicon glyphicon-question-sign" ng-switch-when="unknown"></span>
+                        </span>
+                        {{check.name}}
+                        <small class="text-muted">{{check.message}}</small>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-4 hidden">
+                <dl>
+                    <dt>Last minor outage:</dt>
+                    <dd>
+                        <span ng-if="!status.last_minor">Never</span>
+                        <abbr ng-if="status.last_minor" title="{{status.last_minor}}">{{status.last_minor|fromNow}}</abbr>
+                    </dd>
+                </dl>
+                <hr>
+                <dl>
+                    <dt>Last major outage:</dt>
+                    <dd>
+                        <span ng-if="!status.last_major">Never</span>
+                        <abbr ng-if="status.last_major" title="{{status.last_major}}">{{status.last_major|fromNow}}</abbr>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="row" ng-if="status.checks.length == 0">
+            <div class="col-md-12">
+                <div class="alert alert-info text-center">
+                    <p class="glyphicon glyphicon-question-sign huge-icon"></p>
+                    <p>No checks defined, yet!</p>
+                </div>
+            </div>
+        </div>
+    {% endverbatim %}
+{% endblock %}
+
+
+{# {% block body_attr %}ng-controller="StatusCtrl"{% endblock %} #}
+
+{# {% block body %} #}
+    {# {{ macros.alert(status.statusName) }} #}
+
+    {# <div class="row">
+        <div class="col-xs-12">
+            <div class="page-header narrow">
+                <h5>What is this site?</h5>
+            </div>
+            <p>We continuously monitor the status of our servers, infrastructure and all its related services. If there are any interruptions in service, a note will be posted here. If you are experiencing problems and do not see a notice posted, please email us at <a href="mailto:support@jiabin.net">support@jiabin.net</a>.</p>
+        </div>
+    </div>
 
     <div class="row">
         {% if status.results|length > 0 %}
@@ -64,9 +149,9 @@
         </div>
         {% else %}
         <div class="col-md-12">
-            <div class="alert alert-minor text-center">
+            <div class="alert alert-info text-center">
                 <p class="glyphicon glyphicon-question-sign huge-icon"></p>
-                <p>No checks defined yet!</p>
+                <p>No checks defined, yet!</p>
             </div>
             {% if is_granted('ROLE_ADMIN') %}
             <div class="text-right">
@@ -75,11 +160,11 @@
             {% endif %}
         </div>
         {% endif %}
-    </div>
-{% endblock %}
+    </div> #}
+{# {% endblock %} #}
 
-{% block javascripts %}
-<script>setTimeout(function () { location.reload(); }, 30000);</script>
+{# {% block javascripts %}
+<script>// setTimeout(function () { location.reload(); }, 30000);</script>
 {% if is_granted('ROLE_ADMIN') %}
 <script>
 $(function() {
@@ -99,4 +184,4 @@ $(function() {
 });
 </script>
 {% endif %}
-{% endblock %}
+{% endblock %} #}

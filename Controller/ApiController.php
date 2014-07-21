@@ -13,8 +13,8 @@ class ApiController extends Controller
      */
     public function badgeAction()
     {
-        $cf = $this->get('holter.check_factory');
-        $status = $cf->createStatus();
+        $manager = $this->get('holter.manager');
+        $status  = $manager->createStatus();
 
         $badgeExtension = '.png';
         $badgePath = __DIR__.'/../Resources/public/img/badge';
@@ -33,9 +33,9 @@ class ApiController extends Controller
      */
     public function checksAction()
     {
-        $cf = $this->get('holter.check_factory');
+        $manager = $this->get('holter.manager');
         $data = array();
-        foreach ($cf->getChecks() as $check) {
+        foreach ($manager->getChecks() as $check) {
             $data[$check->getId()] = $check->getName();
         }
 
@@ -51,8 +51,8 @@ class ApiController extends Controller
      */
     public function statusAction()
     {
-        $cf = $this->get('holter.check_factory');
-        $status = $cf->createStatus();
+        $manager = $this->get('holter.manager');
+        $status  = $manager->createStatus();
 
         $response = JsonResponse::create($status->toArray(), 200);
         $response->setPublic();

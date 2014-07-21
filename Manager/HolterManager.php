@@ -1,28 +1,24 @@
 <?php
 
-namespace Jiabin\HolterBundle\Factory;
+namespace Jiabin\HolterBundle\Manager;
 
-use Jiabin\HolterBundle\Model\Result;
-use Jiabin\HolterBundle\Model\Status;
 use Jiabin\HolterBundle\Model\CheckInterface;
+use Jiabin\HolterBundle\Model\Status;
+use Jiabin\HolterBundle\Engine\EngineInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Collections\ArrayCollection;
 
-class CheckFactory
+class HolterManager
 {
-    /**
-     * @var array
-     */
-    protected $checkTypes = array();
-
-    /**
-     * @var array
-     */
-    protected $checks = array();
-
     /**
      * @var ObjectManager
      */
     protected $om;
+
+    /**
+     * @var ArrayCollection
+     */
+    protected $engines;
 
     /**
      * @var string
@@ -38,17 +34,20 @@ class CheckFactory
      * Class constructor
      *
      * @param ObjectManager $om
+     * @param string        $resultClass
+     * @param string        $checkClass
      */
     public function __construct(ObjectManager $om, $resultClass, $checkClass)
     {
-        $this->om = $om;
+        $this->om          = $om;
+        $this->engines     = new ArrayCollection();
         $this->resultClass = $resultClass;
-        $this->checkClass = $checkClass;
+        $this->checkClass  = $checkClass;
     }
 
     /**
      * Get objectManager
-     * 
+     *
      * @return ObjectManager
      */
     public function getObjectManager()
@@ -57,63 +56,44 @@ class CheckFactory
     }
 
     /**
-     * Add checkType
-     * 
-     * @param string $name
-     * @param string $class
-     */
-    public function addCheckType($name, $class)
-    {
-        $this->checkTypes[$name] = $class;
-    }
-
-    /**
-     * Get types
-     * 
-     * @return array
-     */
-    public function getCheckTypes()
-    {
-        return $this->checkTypes;
-    }
-
-    /**
-     * Get typeClass
+     * Add engine
      *
-     * @param  string $name
-     * @return array
+     * @param EngineInterface $engine
      */
-    public function getCheckTypeClass($name)
+    public function addEngine(EngineInterface $engine)
     {
-        return $this->checkTypes[$name];
+        $this->engines->set($engine->getId(), $engine);
     }
 
     /**
-     * Execute check
-     * 
-     * @param  CheckInterface $check
-     * @return Result
+     * Get engines
+     *
+     * @return ArrayCollection
      */
-    public function check(CheckInterface $check)
-    {       
-        $className = $this->getCheckTypeClass($check->getType());
-        $class = new $className($check->getOptions());
-        $class->setCheckFactory($this);
+    public function getEngines()
+    {
+        return $this->engines;
+    }
 
-        $result = $class->check();
-        $result->setCheck($check);
-
-        return $result;
+    /**
+     * Get engine
+     *
+     * @param  string $id
+     * @return EngineInterface
+     */
+    public function getEngine($id)
+    {
+        return $this->engines->get($id);
     }
 
     /**
      * Get checks
-     * 
+     *
      * @return Collection
      */
     public function getChecks()
     {
-        return $this->om->getRepository($this->checkClass)->findAll();
+        return $this->om->getRepository('JiabinHolterBundle:Check')->findAll();
     }
 
     /**
@@ -124,12 +104,28 @@ class CheckFactory
      */
     public function getCheck($id)
     {
-        return $this->om->getRepository($this->checkClass)->find($id);
+        return $this->om->getRepository('JiabinHolterBundle:Check')->find($id);
+    }
+
+    /**
+     * Execute check
+     *
+     * @param  CheckInterface $check
+     * @return Result
+     */
+    public function check(CheckInterface $check)
+    {
+        $engine = $this->getEngine($check->getEngine());
+
+        $result = $engine->check($check->getOptions());
+        $result->setCheck($check);
+
+        return $result;
     }
 
     /**
      * Create status
-     * 
+     *
      * @return Status
      */
     public function createStatus()
@@ -145,12 +141,12 @@ class CheckFactory
         // Last minor & major
         $resultRepository = $this->om->getRepository($this->resultClass);
         $minor = $resultRepository->findBy(array('status' => Status::MINOR), array('createdAt' => 'DESC'));
-        if ($minor->hasNext()) {
-            $status->setLastMinor($minor->getNext()->getCreatedAt());
+        if ($minor) {
+            $status->setLastMinor(current($minor)->getCreatedAt());
         }
         $major = $resultRepository->findBy(array('status' => Status::MAJOR), array('createdAt' => 'DESC'));
-        if ($major->hasNext()) {
-            $status->setLastMajor($major->getNext()->getCreatedAt());
+        if ($major) {
+            $status->setLastMinor(current($major)->getCreatedAt());
         }
 
         return $status;
@@ -168,7 +164,7 @@ class CheckFactory
     {
         $resultRepository = $this->om->getRepository($this->resultClass);
         $className = $resultRepository->getClassName();
-        
+
         $result = new $className($message, $status);
         if ($check) {
             $result->setCheck($check);
@@ -176,6 +172,7 @@ class CheckFactory
 
         return $result;
     }
+
 
     /**
      * Get result
@@ -188,11 +185,12 @@ class CheckFactory
         $resultRepository = $this->om->getRepository($this->resultClass);
         $builder = $resultRepository->createQueryBuilder();
         $result = $builder->field('check')->references($check)->sort('createdAt', 'desc')->getQuery()->getSingleResult();
-        
+
         if (!$result) {
             $result = $this->createResult('n/a', Status::UNKNOWN, $check);
         }
 
         return $result;
     }
+
 }
