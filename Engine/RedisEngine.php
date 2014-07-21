@@ -23,10 +23,18 @@ class RedisEngine extends AbstractEngine
         $redis = new \Redis();
         try {
             $redis->connect($options['host'], $options['port'], 1);
-            $result = $this->buildResult('Redis is up and running.', Status::GOOD);
+            $result = $this->buildResult('I ain\'t got time to bleed.', Status::GOOD);
             $redis->info();
         } catch (\Exception $e) {
-            $result = $this->buildResult('Can not connect to Redis server.', Status::MAJOR);
+            switch ($e->getMessage()) {
+                case 'Redis server went away.':
+                    $message = $e->getMessage();
+                    break;
+                default:
+                    $message = 'Lost connection to server.';
+                    break;
+            }
+            $result = $this->buildResult($message, Status::MAJOR);
         }
 
         return $result;
@@ -37,18 +45,19 @@ class RedisEngine extends AbstractEngine
      */
     public function buildOptionsForm(FormBuilderInterface $builder, array $options)
     {
+        $engineOptions = $options['data']->getOptions();
         $builder
             ->add('host', 'text', array(
                 'required' => true,
-                'empty_data' => 'localhost'
+                'data' => array_key_exists('host', $engineOptions) ? $engineOptions['host'] : 'localhost'
             ))
             ->add('port', 'integer', array(
                 'required' => false,
-                'empty_data' => 6379
+                'data' => array_key_exists('port', $engineOptions) ? $engineOptions['port'] : 6379
             ))
             ->add('database', 'integer', array(
                 'required' => false,
-                'empty_data' => 0
+                'data' => array_key_exists('database', $engineOptions) ? $engineOptions['database'] : 0
             ))
         ;
     }
