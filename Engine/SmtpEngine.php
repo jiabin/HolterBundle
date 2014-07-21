@@ -21,7 +21,7 @@ class SmtpEngine extends AbstractEngine
     public function check($options)
     {
         try {
-            $mailer = $this->createMailer();
+            $mailer = $this->createMailer($options);
             $logger = new \Swift_Plugins_Loggers_ArrayLogger();
             $mailer->registerPlugin(new \Swift_Plugins_LoggerPlugin($logger));
         } catch (\Exception $e) {
@@ -42,7 +42,7 @@ class SmtpEngine extends AbstractEngine
         return $this->buildResult('Fully working', Status::GOOD);
     }
 
-    protected function createMailer()
+    protected function createMailer($options)
     {
         // Create the Transport
         $transport = \Swift_SmtpTransport::newInstance($options['host'], $options['port']);
