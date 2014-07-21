@@ -12,6 +12,7 @@
         <parameter key="holter.engine.ping.class">Jiabin\HolterBundle\Engine\PingEngine</parameter>
         <parameter key="holter.engine.redis.class">Jiabin\HolterBundle\Engine\RedisEngine</parameter>
         <parameter key="holter.engine.smtp.class">Jiabin\HolterBundle\Engine\SmtpEngine</parameter>
+        <parameter key="holter.engine.cloudflare.class">Jiabin\HolterBundle\Engine\CloudFlareEngine</parameter>
     </parameters>
 
     <services>
@@ -41,6 +42,10 @@
         </service>
         <!-- Smtp engine -->
         <service id="holter.engine.smtp" class="%holter.engine.smtp.class%">
+            <tag name="holter.engine" />
+        </service>
+        <!-- CloudFlare engine -->
+        <service id="holter.engine.cloudflare" class="%holter.engine.cloudflare.class%">
             <tag name="holter.engine" />
         </service>
     </services>
