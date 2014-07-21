@@ -39,7 +39,7 @@ class User extends BaseUser
     {
         $this->setUsernameCanonical($emailCanonical);
 
-        return parent::setEmail($emailCanonical);
+        return parent::setEmailCanonical($emailCanonical);
     }
 
     /**
