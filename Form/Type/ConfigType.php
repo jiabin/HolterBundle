@@ -36,6 +36,13 @@ class ConfigType extends AbstractType
                     'class' => 'codemirror'
                 )
             ))
+            ->add('twitter_widget', 'textarea', array(
+                'required' => false,
+                'help_block' => 'Twitter embedded timeline HTML code',
+                'attr' => array(
+                    'class' => 'codemirror'
+                )
+            ))
         ;
     }
 

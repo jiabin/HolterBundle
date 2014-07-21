@@ -269,3 +269,14 @@ body {
 legend {
     border-bottom: 1px solid #eee;
 }
+
+/* Twitter
+-------------------------------------------------- */
+
+.twitter-widget {
+  width: 100%;
+}
+
+.twitter-widget iframe {
+  width: 100% !important;
+}
