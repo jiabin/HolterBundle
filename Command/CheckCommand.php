@@ -3,7 +3,6 @@
 namespace Jiabin\HolterBundle\Command;
 
 use Jiabin\HolterBundle\Events;
-use Jiabin\HolterBundle\Event\CheckEvent;
 use Jiabin\HolterBundle\Model\Result;
 use Jiabin\HolterBundle\Model\Status;
 use Symfony\Component\Console\Input\InputArgument;
@@ -31,7 +30,7 @@ class CheckCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $container = $this->getContainer();
-        $dispatcher = $container->get('event_dispatcher'); 
+        $dispatcher = $container->get('event_dispatcher');
         $manager = $container->get('holter.manager');
 
         if ($id = $input->getArgument('check')) {
@@ -49,13 +48,13 @@ class CheckCommand extends ContainerAwareCommand
             $result = $manager->check($check);
             $output->writeln($this->resultString($result));
 
-            $event = new CheckEvent($result);
-            $dispatcher->dispatch(Events::HOLTER_CHECK, $event);
+            $manager->getObjectManager()->persist($result);
+            $manager->getObjectManager()->flush($result);
         }
     }
 
     /**
-     * Outputs result 
+     * Outputs result
      */
     private function resultString(Result $result)
     {
