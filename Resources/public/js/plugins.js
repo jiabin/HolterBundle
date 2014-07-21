@@ -38,3 +38,19 @@ function changeFavicon(status) {
     }
     document.head.appendChild(link);
 }
+
+// Initiliaze Codemirror
+$(document).ready(function(){
+  if (typeof CodeMirror !== 'undefined') {
+    $('.codemirror').each(function() {
+      CodeMirror.fromTextArea(document.getElementById($(this).attr('id')), {
+        lineNumbers: true,
+        lineWrapping: true,
+        tabSize: 2,
+        indentUnit: 2,
+        mode: "text/html",
+        theme: "solarized dark"
+      });
+    });
+  }
+});
