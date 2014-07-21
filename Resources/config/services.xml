@@ -6,6 +6,7 @@
 
     <parameters>
         <parameter key="holter.manager.class">Jiabin\HolterBundle\Manager\HolterManager</parameter>
+        <parameter key="holter.form.user.class">Jiabin\HolterBundle\Form\Type\UserType</parameter>
         <parameter key="holter.form.config.class">Jiabin\HolterBundle\Form\Type\ConfigType</parameter>
         <parameter key="holter.form.engine.class">Jiabin\HolterBundle\Form\Type\EngineType</parameter>
         <parameter key="holter.form.check.class">Jiabin\HolterBundle\Form\Type\CheckType</parameter>
@@ -19,6 +20,7 @@
             <argument>%holter.result.doctrine.class%</argument>
             <argument>%holter.check.doctrine.class%</argument>
             <argument>%holter.config.doctrine.class%</argument>
+            <argument>%holter.user.doctrine.class%</argument>
         </service>
         <!-- Holter extension -->
         <service id="holter.twig.extension" class="Jiabin\HolterBundle\Twig\Extension\HolterExtension" lazy="true">
@@ -26,6 +28,13 @@
             <call method="setManager">
                 <argument type="service" id="holter.manager" />
             </call>
+        </service>
+        <!-- User Form Type -->
+        <service id="holter.form.user" class="%holter.form.user.class%">
+            <argument type="service" id="holter.manager" />
+            <argument type="service" id="security.role_hierarchy" />
+            <argument type="service" id="security.context" />
+            <tag name="form.type" alias="holter_user" />
         </service>
         <!-- Config Form Type -->
         <service id="holter.form.config" class="%holter.form.config.class%">

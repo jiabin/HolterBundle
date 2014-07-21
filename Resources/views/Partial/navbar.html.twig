@@ -27,15 +27,17 @@
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu" role="menu">
-                                {{ macros.list_link('holter_admin_check', 'Checks') }}
+                                {{ macros.list_link('holter_admin_check', 'Checks list') }}
                                 {{ macros.list_link('holter_admin_new_check', 'New check') }}
                                 {{ macros.list_link('holter_admin_config', 'Configuration') }}
+                                {{ macros.list_link('holter_admin_user', 'Users list') }}
+                                {{ macros.list_link('holter_admin_new_user', 'New user') }}
                             </ul>
                         </li>
                     {% endif %}
-                    <li><a href="{{ path('_security_logout') }}">Logout</a></li>
+                    <li><a href="{{ path('fos_user_security_logout') }}">Logout</a></li>
                 {% else %}
-                    <li><a href="{{ path('_security_login') }}">Login</a></li>
+                    <li><a href="{{ path('fos_user_security_login') }}">Login</a></li>
                 {% endif %}
             </ul>
         </div>

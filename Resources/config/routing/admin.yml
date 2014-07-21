@@ -20,3 +20,22 @@ holter_admin_config:
     defaults: { _controller:  JiabinHolterBundle:Admin:indexConfig }
     pattern:  /admin/config
     methods:  [GET, POST]
+
+holter_admin_user:
+    defaults: { _controller:  JiabinHolterBundle:Admin:indexUser }
+    pattern:  /admin/user
+    methods:  [GET]
+
+holter_admin_new_user:
+    defaults: { _controller:  JiabinHolterBundle:Admin:newUser }
+    pattern:  /admin/user/new
+
+holter_admin_edit_user:
+    defaults: { _controller:  JiabinHolterBundle:Admin:editUser }
+    pattern:  /admin/user/{id}/edit
+    methods:  [GET, POST]
+
+holter_admin_delete_user:
+    defaults: { _controller:  JiabinHolterBundle:Admin:deleteUser }
+    pattern:  /admin/user/{id}/delete
+    methods:  [GET, POST]

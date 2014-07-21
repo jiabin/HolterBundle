@@ -1,0 +1,54 @@
+{% extends "JiabinHolterBundle:Base:layout.html.twig" %}
+
+{% block subtitle %}admin:user{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h5 class="panel-title">Users list</h5>
+                </div>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Name</th>
+                            <th>Last login</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.name }}</td>
+                                <td>
+                                    {% if user.lastLogin %}
+                                        {{ user.lastLogin|localizeddate('short', 'medium') }}
+                                    {% else %}
+                                        Never
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{{ path('holter_admin_edit_user', {id: user.id}) }}" class="btn btn-info btn-sm">
+                                        <span class="glyphicon glyphicon-edit"></span>
+                                        &nbsp;Edit
+                                    </a>
+                                    {% if app.user != user %}
+                                    <a href="{{ path('holter_admin_delete_user', {id: user.id}) }}" onclick="return confirm('Are you sure that you want to delete this user?');" class="btn btn-danger btn-sm">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                        &nbsp;Delete
+                                    </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="panel-footer text-right">
+                    <a href="{{ path('holter_admin_new_user') }}" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Add new user</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

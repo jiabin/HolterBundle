@@ -4,6 +4,7 @@ namespace Jiabin\HolterBundle\Controller;
 
 use Jiabin\HolterBundle\Document\Check;
 use Craue\FormFlowBundle\Form\FormFlowInterface;
+use FOS\UserBundle\Model\UserInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -138,5 +139,101 @@ class AdminController extends Controller
         return $this->render('JiabinHolterBundle:Admin:config.html.twig', array(
             'form' => $form->createView()
         ));
+    }
+
+    /**
+     * Index user action
+     */
+    public function indexUserAction(Request $request)
+    {
+        $manager = $this->get('holter.manager');
+        $repo    = $manager->getObjectManager()->getRepository($manager->userClass);
+        $users   = $repo->findAll();
+
+        return $this->render('JiabinHolterBundle:Admin:user.html.twig', array(
+            'users' => $users
+        ));
+    }
+
+    /**
+     * New user action
+     */
+    public function newUserAction(Request $request)
+    {
+        $user = $this->get('fos_user.user_manager')->createUser();
+        $form = $this->createUserForm($request, $user);
+        if ($form instanceof Response) {
+            return $form;
+        }
+
+        return $this->render('JiabinHolterBundle:Admin:user_form.html.twig', array(
+            'form' => $form->createView()
+        ));
+    }
+
+    /**
+     * Edit user action
+     */
+    public function editUserAction(Request $request, $id)
+    {
+        $user = $this->get('fos_user.user_manager')->findUserBy(array('id' => $id));
+        $form = $this->createUserForm($request, $user);
+        if ($form instanceof Response) {
+            return $form;
+        }
+
+        return $this->render('JiabinHolterBundle:Admin:user_form.html.twig', array(
+            'form' => $form->createView()
+        ));
+    }
+
+    /**
+     * Create user form
+     *
+     * @param  Request       $request
+     * @param  UserInterface $user
+     * @return Response|FormInterface
+     */
+    public function createUserForm(Request $request, UserInterface $user)
+    {
+        $form = $this->createForm('holter_user', $user);
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid($form)) {
+                $this->get('fos_user.user_manager')->updateUser($user);
+
+                $this->get('session')->getFlashBag()->add('success', 'User saved successfully!');
+
+                return $this->redirect($this->generateUrl('holter_admin_user'));
+            }
+        }
+
+        return $form;
+    }
+
+    /**
+     * Delete user
+     */
+    public function deleteUserAction($id)
+    {
+        $current = $this->get('security.context')->getToken()->getUser();
+        $manager = $this->get('holter.manager');
+        $repo    = $manager->getObjectManager()->getRepository($manager->userClass);
+        $user    = $repo->find($id);
+        $name    = $user->getName();
+
+        if ($current->getId() === $user->getId()) {
+            $this->get('session')->getFlashBag()->add('error', "You have to login with another account to delete your self.");
+
+            return $this->redirect($this->generateUrl('holter_admin_user'));
+        }
+
+        $om = $manager->getObjectManager();
+        $om->remove($user);
+        $om->flush();
+
+        $this->get('session')->getFlashBag()->add('success', "User \"$name\" deleted successfully!");
+
+        return $this->redirect($this->generateUrl('holter_admin_user'));
     }
 }

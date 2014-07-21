@@ -36,20 +36,27 @@ class HolterManager
     public $configClass;
 
     /**
+     * @var string
+     */
+    public $userClass;
+
+    /**
      * Class constructor
      *
      * @param ObjectManager $om
      * @param string        $resultClass
      * @param string        $checkClass
      * @param string        $configClass
+     * @param string        $userClass
      */
-    public function __construct(ObjectManager $om, $resultClass, $checkClass, $configClass)
+    public function __construct(ObjectManager $om, $resultClass, $checkClass, $configClass, $userClass)
     {
         $this->om          = $om;
         $this->engines     = new ArrayCollection();
         $this->resultClass = $resultClass;
         $this->checkClass  = $checkClass;
         $this->configClass = $configClass;
+        $this->userClass   = $userClass;
     }
 
     /**
