@@ -8,6 +8,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 class CloudFlareEngine extends AbstractEngine
 {
     /**
+     * @var array
+     */
+    protected $array;
+
+    /**
      * {@inheritdoc}
      */
     public function getName()
@@ -28,15 +33,20 @@ class CloudFlareEngine extends AbstractEngine
      */
     public function check($options)
     {
-        $url   = 'https://www.cloudflare.com/api/v2/sys_status';
-        $json  = file_get_contents($url);
-        $array = json_decode($json, true);
-        if (array_key_exists($options['data-center'], $array['response']['colos'])) {
-            $today = current($array['response']['colos'][$options['data-center']]);
+        // Cache response
+        if (empty($this->array)) {
+            $url  = 'https://www.cloudflare.com/api/v2/sys_status';
+            $json = file_get_contents($url);
+
+            $this->array = json_decode($json, true);
+        }
+
+        if (array_key_exists($options['data-center'], $this->array['response']['colos'])) {
+            $today = current($this->array['response']['colos'][$options['data-center']]);
             if ($today) {
                 switch ($today['status']) {
                     case 'online':
-                        $result = $this->buildResult('Connection established.', Status::GOOD);
+                        $result = $this->buildResult('Running normally.', Status::GOOD);
                         break;
                     case 'degraded':
                         $result = $this->buildResult('Degraded performance.', Status::MINOR);
@@ -46,7 +56,7 @@ class CloudFlareEngine extends AbstractEngine
                         break;
                     case 'offline':
                     case 'error':
-                        $result = $this->buildResult('Connection error.', Status::MAJOR);
+                        $result = $this->buildResult('I see dead people.', Status::MAJOR);
                         break;
                     default:
                         $result = $this->buildResult('Unknown status.', Status::UNKNOWN);
