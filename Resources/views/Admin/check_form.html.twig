@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="col-md-9">
-            <form action="{{ path('holter_admin_new_check') }}" role="form" method="post">
+            <form action="{{ app.request.uri }}" role="form" method="post">
                 {{ form_widget(form) }}
                 {% if flow.getCurrentStepNumber() == 1 %}
                 {% elseif flow.getCurrentStepNumber() == 2 %}

@@ -1,3 +1,9 @@
+{% macro list_link(route, label) %}
+    <li class="{% if path(route) == app.request.requestUri %}active{% endif %}">
+        <a href="{{ path(route) }}">{{ label }}</a>
+    </li>
+{% endmacro %}
+
 {% macro flashes() %}
     {% for flashMessage in app.session.flashbag.get('success') %}
         <div class="alert alert-success">

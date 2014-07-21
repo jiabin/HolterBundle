@@ -18,25 +18,32 @@
         <div class="alert alert-{{status.status_name}}" ng-if="status.status_name == 'major'">
             <p>Oh snap! Major system outage!</p>
         </div>
+    {% endverbatim %}
 
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="page-header">
-                    <h5>What is this site?</h5>
-                </div>
-                <p>
-                    We continuously monitor the status of our infrastructure and all its related services. If there are any interruptions in service, a note will be posted here. If you are experiencing problems and do not see a notice posted, please email <a href="mailto:support@jiabin.net">support@jiabin.net</a>.
-                </p>
+    <div class="row">
+        <div class="col-xs-12">
+            {% set defaultDescription %}
+            <div class="page-header">
+                <h5>What is this site?</h5>
             </div>
+            <p>
+                We continuously monitor the status of our infrastructure and all its related services. If there are any interruptions in service, a note will be posted here. If you are experiencing problems and do not see a notice posted, please email <a href="mailto:support@jiabin.net">support@jiabin.net</a>.
+            </p>
+            {% endset %}
+            {{ config.description|default(defaultDescription)|raw }}
         </div>
+    </div>
 
-        <div class="row" ng-if="status.checks">
+    {% verbatim %}
+
+        <div class="row" ng-if="status.checks" ng-repeat="group in groups">
             <div class="col-md-12">
                 <div class="page-header no-border">
-                    <h5>Service status</h5>
+                    <h5 ng-if="group.name != 'default'">{{group.name}}</h5>
+                    <h5 ng-if="group.name == 'default'">Service status</h5>
                 </div>
-                <ul class="list-group">
-                    <li class="list-group-item" ng-repeat="check in status.checks">
+                <div class="list-group">
+                    <div class="list-group-item" ng-repeat="check in group.checks">
                         <span class="badge badge-{{check.status_name}}" ng-switch="check.status_name">
                             <span class="glyphicon glyphicon-ok-sign" ng-switch-when="good"></span>
                             <span class="glyphicon glyphicon-exclamation-sign" ng-switch-when="minor"></span>
@@ -45,8 +52,8 @@
                         </span>
                         {{check.name}}
                         <small class="text-muted">{{check.message}}</small>
-                    </li>
-                </ul>
+                    </div>
+                </div>
             </div>
             <div class="col-md-4 hidden">
                 <dl>

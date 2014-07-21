@@ -17,6 +17,8 @@
         <link rel="stylesheet" href="/components/normalize-css/normalize.css">
         <link rel="stylesheet" href="/components/html5-boilerplate/css/main.css">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/flatly/bootstrap.min.css">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/4.4.0/codemirror.min.css">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/4.4.0/theme/solarized.css">
         <link rel="stylesheet" href="/bundles/jiabinholter/css/main.css">
         <script src="/components/modernizr/modernizr.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>
@@ -31,18 +33,7 @@
         <div id="wrap">
 
             <div class="container">
-
                 {% include "JiabinHolterBundle:Partial:navbar.html.twig" %}
-
-                {# <div class="page-header">
-                    <h2>
-                        <a href="{{ path('holter') }}">
-                            <img src="/bundles/jiabinholter/img/logo.png" alt="Pulse designed by Nico Tzogalis from the Noun Project">
-                            {{ title|default('Holter') }}
-                        </a>
-                        <small>{{ subtitle }}</small>
-                    </h2>
-                </div> #}
 
                 {{ macros.flashes() }}
 
