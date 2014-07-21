@@ -6,24 +6,8 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9" ng-app="HolterApp"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" ng-app="HolterApp"> <!--<![endif]-->
     <head>
-        {% block head %}
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>{% block title %}{{ config.title|default('Holter') }}{% endblock %}</title>
-        <meta name="description" content="This page reports on known incidents affecting offered services">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        {% block meta %}{% endblock %}
-
-        <link rel="stylesheet" href="/components/normalize-css/normalize.css">
-        <link rel="stylesheet" href="/components/html5-boilerplate/css/main.css">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/flatly/bootstrap.min.css">
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/4.4.0/codemirror.min.css">
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/4.4.0/theme/solarized.css">
-        <link rel="stylesheet" href="/bundles/jiabinholter/css/main.css">
-        <script src="/components/modernizr/modernizr.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>
+        {% include "JiabinHolterBundle:Partial:head.html.twig" %}
         {% block stylesheets %}{% endblock %}
-        {% endblock %}
     </head>
     <body ng-controller="HolterCtrl">
         <!--[if lt IE 7]>

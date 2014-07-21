@@ -54,3 +54,11 @@ $(document).ready(function(){
     });
   }
 });
+
+// Initialize tablecloth
+$(document).ready(function(){
+    $("table").tablecloth({
+      theme: "default",
+      sortable: true
+    });
+});
