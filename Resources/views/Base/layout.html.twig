@@ -9,7 +9,7 @@
         {% block head %}
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>{% block title %}{{ title|default('Holter') }}{% endblock %}</title>
+        <title>{% block title %}{{ config.title|default('Holter') }}{% endblock %}</title>
         <meta name="description" content="This page reports on known incidents affecting offered services">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         {% block meta %}{% endblock %}
