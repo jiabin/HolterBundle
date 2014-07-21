@@ -25,6 +25,11 @@ class User extends BaseUser
     /**
      * {@inheritdoc}
      */
+    protected $enabled = true;
+
+    /**
+     * {@inheritdoc}
+     */
     public function setEmail($email)
     {
         $this->setUsername($email);
