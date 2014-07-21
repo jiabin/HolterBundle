@@ -7,19 +7,11 @@
     <parameters>
         <parameter key="holter.manager.class">Jiabin\HolterBundle\Manager\HolterManager</parameter>
         <parameter key="holter.form.engine.class">Jiabin\HolterBundle\Form\Type\EngineType</parameter>
-
-        <parameter key="holter.event_subscriber.class">Jiabin\HolterBundle\Event\EventSubscriber</parameter>
-        <parameter key="holter.check_factory.class">Jiabin\HolterBundle\Factory\CheckFactory</parameter>
         <parameter key="holter.form.check.class">Jiabin\HolterBundle\Form\Type\CheckType</parameter>
         <parameter key="holter.form.flow.check.class">Jiabin\HolterBundle\Form\Flow\CheckFlow</parameter>
     </parameters>
 
     <services>
-        <!-- Event Subscriber -->
-        <service id="holter.event_subscriber" class="%holter.event_subscriber.class%">
-            <argument /> <!-- Replaced in bundle extension -->
-            <tag name="kernel.event_subscriber" />
-        </service>
         <!-- Holter manager -->
         <service id="holter.manager" class="%holter.manager.class%">
             <argument /> <!-- Replaced in bundle extension -->

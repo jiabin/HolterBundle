@@ -43,11 +43,5 @@ class JiabinHolterExtension extends Extension
 
         $holterManager = $container->getDefinition('holter.manager');
         $holterManager->replaceArgument(0, new Reference($om));
-
-        $eventSubscriber = $container->getDefinition('holter.event_subscriber');
-        $eventSubscriber->replaceArgument(0, new Reference($om));
-
-        // $checkFactory = $container->getDefinition('holter.check_factory');
-        // $checkFactory->replaceArgument(0, new Reference($om));
     }
 }
