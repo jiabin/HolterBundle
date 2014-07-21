@@ -97,7 +97,8 @@ class WorkerCommand extends ContainerAwareCommand
             }
 
             // Check
-            $output->write(sprintf('[%s] Checking %s ', date('Y-m-d\TH:i:sP'), $check->getName()));
+            $engine = $manager->getEngine($check->getEngine());
+            $output->write(sprintf('[%s] Checking %s:%s ', date('Y-m-d\TH:i:sP'), $engine->getLabel(), $check->getName()));
             $result = $manager->check($check);
             $output->writeln($this->resultString($result));
 
