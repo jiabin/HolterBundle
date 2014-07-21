@@ -24,6 +24,7 @@ class RedisEngine extends AbstractEngine
         try {
             $redis->connect($options['host'], $options['port'], 1);
             $result = $this->buildResult('Redis is up and running.', Status::GOOD);
+            $redis->info();
         } catch (\Exception $e) {
             $result = $this->buildResult('Can not connect to Redis server.', Status::MAJOR);
         }

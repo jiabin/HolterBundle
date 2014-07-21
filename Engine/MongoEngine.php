@@ -27,6 +27,7 @@ class MongoEngine extends AbstractEngine
 
         try {
             $m = new \MongoClient("mongodb://".$options['host'], $auth);
+            $m->listDBs();
             $result = $this->buildResult('Mongo is up and running', Status::GOOD);
         } catch (\Exception $e) {
             if (strpos($e->getMessage(), 'Operation timed out') !== false) {
