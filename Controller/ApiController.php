@@ -40,6 +40,7 @@ class ApiController extends Controller
         }
 
         $response = JsonResponse::create($data, 200);
+        $response->setEncodingOptions(JSON_PRETTY_PRINT);
         $response->setPublic();
         $response->setSharedMaxAge(600);
 
@@ -55,6 +56,7 @@ class ApiController extends Controller
         $status  = $manager->createStatus();
 
         $response = JsonResponse::create($status->toArray(), 200);
+        $response->setEncodingOptions(JSON_PRETTY_PRINT);
         $response->setPublic();
         $response->setSharedMaxAge(30);
 
