@@ -280,3 +280,24 @@ legend {
 .twitter-widget iframe {
   width: 100% !important;
 }
+
+/* Pace.js
+-------------------------------------------------- */
+
+.pace .pace-progress {
+  background: #1abc9c;
+  position: fixed;
+  z-index: 2000;
+  top: 0;
+  left: 0;
+  height: 2px;
+
+  -webkit-transition: width 1s;
+  -moz-transition: width 1s;
+  -o-transition: width 1s;
+  transition: width 1s;
+}
+
+.pace-inactive {
+  display: none;
+}
